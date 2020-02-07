@@ -25,7 +25,7 @@ class TipoLaboratorioController extends Controller
      */
     public function create()
     {
-        return view('tipo_laboratorios\create');
+        return view('tipo_laboratorios.create');
     }
 
     /**
@@ -60,7 +60,7 @@ class TipoLaboratorioController extends Controller
      */
     public function edit(TipoLaboratorio $tipoLaboratorio)
     {
-        return view('tipo_laboratorios\edit', compact('tipoLaboratorio'));
+        return view('tipo_laboratorios.edit', compact('tipoLaboratorio'));
     }
 
     /**

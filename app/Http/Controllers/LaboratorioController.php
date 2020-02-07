@@ -16,7 +16,7 @@ class LaboratorioController extends Controller
      */
     public function index(Laboratorio $model)
     {
-        return view('laboratorio\index', ['laboratorios' => $model->paginate(15)]);
+        return view('laboratorio.index', ['laboratorios' => $model->paginate(15)]);
     }
 
     /**
@@ -27,7 +27,7 @@ class LaboratorioController extends Controller
     public function create()
     {
         $tipoLab = TipoLaboratorio::all();
-        return view('laboratorio\create', compact('tipoLab'));
+        return view('laboratorio.create', compact('tipoLab'));
     }
 
     /**
@@ -63,7 +63,7 @@ class LaboratorioController extends Controller
     public function edit(Laboratorio $laboratorio)
     {
         $tipoLab = TipoLaboratorio::all();
-        return view('laboratorio\edit', compact('laboratorio', 'tipoLab'));
+        return view('laboratorio.edit', compact('laboratorio', 'tipoLab'));
     }
 
     /**
