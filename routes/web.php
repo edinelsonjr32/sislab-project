@@ -61,6 +61,8 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::resource('laboratorio', 'LaboratorioController', ['except' => ['show']]);
 
+    Route::resource('tipo_solicitante', 'TipoSolicitanteController', ['except' => ['show']]);
+
 	Route::get('profile', ['as' => 'profile.edit', 'uses' => 'ProfileController@edit']);
 	Route::put('profile', ['as' => 'profile.update', 'uses' => 'ProfileController@update']);
 	Route::put('profile/password', ['as' => 'profile.password', 'uses' => 'ProfileController@password']);

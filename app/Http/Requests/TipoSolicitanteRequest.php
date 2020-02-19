@@ -4,9 +4,8 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class TipoLaboratorioRequest extends FormRequest
+class TipoSolicitanteRequest extends FormRequest
 {
-
     public function authorize()
     {
         return auth()->check();

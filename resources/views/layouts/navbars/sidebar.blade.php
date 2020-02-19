@@ -29,7 +29,7 @@
             <p>{{ __('Meu Perfil') }}</p>
         </a>
       </li>
-      <li class="nav-item{{ $activePage == 'user-management' ? ' active' : '' }}">
+      <li class="nav-item{{ $activePage == 'tipo-laboratorio' ? ' active' : '' }}">
         <a class="nav-link" href="{{ route('tipo_laboratorio.index') }}">
           <i class="material-icons">domain</i>
             <p>{{ __('Tipo Laboratório') }}</p>
@@ -41,10 +41,26 @@
             <p>{{ __('Laboratório') }}</p>
         </a>
       </li>
+      <li class="nav-item{{ $activePage == 'tipo_solicitante' ? ' active' : '' }}">
+        <a class="nav-link" href="{{ route('tipo_solicitante.index') }}">
+          <i class="material-icons">assignment_ind</i>
+          <p>{{ __('Tipo Solicitante') }}</p>
+        </a>
+      </li>
+
+
+      <li class="nav-item{{ $activePage == 'solicitante' ? ' active' : '' }}">
+        <a class="nav-link" href="{{ route('tipo_solicitante.index') }}">
+          <i class="material-icons">perm_identity</i>
+          <p>{{ __('Solicitante') }}</p>
+        </a>
+      </li>
+
+
 
       <li class="nav-item{{ $activePage == 'table' ? ' active' : '' }}">
         <a class="nav-link" href="{{ route('table') }}">
-          <i class="material-icons">content_paste</i>
+          <i class="material-icons">perm_identity</i>
             <p>{{ __('Table List') }}</p>
         </a>
       </li>
