@@ -14,7 +14,10 @@ class ReservaController extends Controller
      */
     public function index(Reserva $reserva)
     {
-        return $reserva;
+        return $reserva->select('reserva.data', 'users.name as nomeUsuario')->join('')->join('users', 'users.id', '=', 'reserva.usuario_id')->paginate(15);
+
+
+
     }
 
     /**
