@@ -17,6 +17,11 @@ class CreateTipoLaboratorio extends Migration
             $table->bigIncrements('id');
             $table->string('nome')->nullable();
             $table->boolean('status')->default(true);
+
+
+
+
+            //buceta
             $table->timestamps();
         });
     }
