@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\SolicitanteRequest;
 use App\Solicitante;
+use App\TipoSolicitante;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class SolicitanteController extends Controller
 {
@@ -12,9 +15,15 @@ class SolicitanteController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Solicitante $model)
     {
-        //
+        $solicitantes = $model->select('solicitantes.*', 'tipo_solicitante.nome as nomeTipo')->join('tipo_solicitante', 'solicitantes.tipo_solicitante_id', '=', 'tipo_solicitante.id')->paginate(15);
+
+
+
+
+        return view('solicitante.index', ['solicitantes'=> $solicitantes]);
+
     }
 
     /**
@@ -24,7 +33,9 @@ class SolicitanteController extends Controller
      */
     public function create()
     {
-        //
+        $tipoSolicitante = TipoSolicitante::all();
+
+        return view('solicitante.create', ['tipoSolicitante'=> $tipoSolicitante]);
     }
 
     /**
@@ -33,9 +44,11 @@ class SolicitanteController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(SolicitanteRequest $request ,Solicitante $model )
     {
-        //
+        $model->create($request->all());
+
+        return redirect(route('solicitante.index'))->withStatus(__('Solicitante criado com sucesso.'));
     }
 
     /**
@@ -57,7 +70,9 @@ class SolicitanteController extends Controller
      */
     public function edit(Solicitante $solicitante)
     {
-        //
+        $tipos = TipoSolicitante::all();
+
+        return view ('solicitante.edit', ['solicitante'=>$solicitante, 'tipos'=> $tipos]);
     }
 
     /**
@@ -67,9 +82,11 @@ class SolicitanteController extends Controller
      * @param  \App\Solicitante  $solicitante
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Solicitante $solicitante)
+    public function update(SolicitanteRequest $request, Solicitante $solicitante)
     {
-        //
+        $solicitante->update($request->all());
+
+        return redirect(route('solicitante.index'))->withStatus(__('Dados de Solicitante Alterado com sucesso!'));
     }
 
     /**
@@ -80,6 +97,9 @@ class SolicitanteController extends Controller
      */
     public function destroy(Solicitante $solicitante)
     {
-        //
+        $solicitante->delete();
+
+
+        return redirect(route('solicitante.index'))->withStatus(__('Solicitante excluido com sucesso!'));
     }
 }

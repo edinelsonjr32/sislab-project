@@ -1,4 +1,4 @@
-<div class="sidebar" data-color="orange" data-background-color="white" data-image="{{ asset('material') }}/img/sidebar-1.jpg">
+<div class="sidebar" data-color="orange" data-background-color="black" data-image="{{ asset('material') }}/img/sidebar-6.jpg">
   <!--
       Tip 1: You can change the color of the sidebar using: data-color="purple | azure | green | orange | danger"
 
@@ -48,58 +48,21 @@
         </a>
       </li>
 
-
       <li class="nav-item{{ $activePage == 'solicitante' ? ' active' : '' }}">
-        <a class="nav-link" href="{{ route('tipo_solicitante.index') }}">
+        <a class="nav-link" href="{{ route('solicitante.index') }}">
           <i class="material-icons">perm_identity</i>
           <p>{{ __('Solicitante') }}</p>
         </a>
       </li>
 
-
-
-      <li class="nav-item{{ $activePage == 'table' ? ' active' : '' }}">
-        <a class="nav-link" href="{{ route('table') }}">
+      <li class="nav-item{{ $activePage == 'reserva' ? ' active' : '' }}">
+        <a class="nav-link" href="{{ route('reserva.index') }}">
           <i class="material-icons">perm_identity</i>
-            <p>{{ __('Table List') }}</p>
+          <p>{{ __('Reserva') }}</p>
         </a>
       </li>
-      <li class="nav-item{{ $activePage == 'typography' ? ' active' : '' }}">
-        <a class="nav-link" href="{{ route('typography') }}">
-          <i class="material-icons">library_books</i>
-            <p>{{ __('Typography') }}</p>
-        </a>
-      </li>
-      <li class="nav-item{{ $activePage == 'icons' ? ' active' : '' }}">
-        <a class="nav-link" href="{{ route('icons') }}">
-          <i class="material-icons">bubble_chart</i>
-          <p>{{ __('Icons') }}</p>
-        </a>
-      </li>
-      <li class="nav-item{{ $activePage == 'map' ? ' active' : '' }}">
-        <a class="nav-link" href="{{ route('map') }}">
-          <i class="material-icons">location_ons</i>
-            <p>{{ __('Maps') }}</p>
-        </a>
-      </li>
-      <li class="nav-item{{ $activePage == 'notifications' ? ' active' : '' }}">
-        <a class="nav-link" href="{{ route('notifications') }}">
-          <i class="material-icons">notifications</i>
-          <p>{{ __('Notifications') }}</p>
-        </a>
-      </li>
-      <li class="nav-item{{ $activePage == 'language' ? ' active' : '' }}">
-        <a class="nav-link" href="{{ route('language') }}">
-          <i class="material-icons">language</i>
-          <p>{{ __('RTL Support') }}</p>
-        </a>
-      </li>
-      <li class="nav-item active-pro{{ $activePage == 'upgrade' ? ' active' : '' }}">
-        <a class="nav-link" href="{{ route('upgrade') }}">
-          <i class="material-icons">unarchive</i>
-          <p>{{ __('Upgrade to PRO') }}</p>
-        </a>
-      </li>
+
+
     </ul>
   </div>
 </div>
