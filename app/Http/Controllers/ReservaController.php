@@ -50,7 +50,6 @@ class ReservaController extends Controller
         $dataHoje = date('Y-m-d');
 
 
-
         return $dataHoje;
 
 
@@ -69,7 +68,7 @@ class ReservaController extends Controller
     }
 
     public function buscaSemana($idReserva){
-
+        return 'teste';
     }
 
     public function buscaTodos($idReserva){
