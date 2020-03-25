@@ -17,7 +17,7 @@
               <div class="card-body ">
                 <div class="row">
                   <div class="col-md-12 text-right">
-                      <a href="{{ route('reserva.index') }}" class="btn btn-sm btn-primary">{{ __('Voltar para Tela de Laboratório') }}</a>
+                      <a href="{{ route('reserva.laboratorio.index', $idReserva) }}" class="btn btn-sm btn-primary">{{ __('Voltar para Tela de Reserva') }}</a>
                   </div>
                 </div>
 

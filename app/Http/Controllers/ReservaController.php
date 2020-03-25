@@ -162,6 +162,7 @@ class ReservaController extends Controller
 
             $solicitantes = Solicitante::all();
             $laboratorios = Laboratorio::all();
+
             return view('reserva.edit', ['solicitantes'=> $solicitantes, 'laboratorios'=>$laboratorios, 'idReserva' => $reserva->id, 'reserva'=> $reserva]);
 
     }
