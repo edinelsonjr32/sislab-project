@@ -6,7 +6,6 @@ use App\Http\Requests\ReservaRequest;
 use App\Laboratorio;
 use App\Reserva;
 use App\Solicitante;
-use Faker\Provider\DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -26,7 +25,7 @@ class ReservaController extends Controller
     }
     public function laboratorioIndex($idReserva){
 
-        $dataHoje = DateTime::date();
+        $dataHoje = date('Y-m-d');
 
 
 
