@@ -20,21 +20,14 @@ class ReservaController extends Controller
     {
 
 
-        return view('reserva.index', ['reservas' => $reserva->select('reserva.*', 'users.name as nomeUsuario', 'solicitantes.nome as nomeSolicitante', 'laboratorio.nome as nomeLaboratorio')->join('laboratorio', 'laboratorio.id', '=', 'reserva.laboratorio_id')->join('solicitantes', 'solicitantes.id', '=', 'reserva.solicitante_id')->join('users', 'users.id', '=', 'reserva.usuario_id')->orderBy('data', 'desc')->paginate(15)]);
+        /**/
 
     }
     public function laboratorioIndex($idReserva){
 
-        $dataHoje = date('Y-m-d', strtotime('-1 days', strtotime(date('y-m-d'))));
-
-
-
-
         $reserva = new Reserva;
 
-
-        //comentario
-
+        $dataHoje = date('Y-m-d');
 
 
 
@@ -42,18 +35,14 @@ class ReservaController extends Controller
         return view('reserva.index', ['idReserva'=> $idReserva,'reservas'=> $reserva->select('reserva.*', 'users.name as nomeUsuario', 'solicitantes.nome as nomeSolicitante', 'laboratorio.nome as nomeLaboratorio')->join('laboratorio', 'laboratorio.id', '=', 'reserva.laboratorio_id')->join('solicitantes', 'solicitantes.id', '=', 'reserva.solicitante_id')->join('users', 'users.id', '=', 'reserva.usuario_id')->where('reserva.laboratorio_id', '=', $idReserva)->whereDate('data', $dataHoje)->orderBy('data', 'desc')->paginate(15)]);
     }
 
+
+
+
+
     public function buscaData(Request $request, $idReserva){
-
-        $reserva = new Reserva;
-
-
         $dataHoje = date('Y-m-d');
 
-
-        return $dataHoje;
-
-
-
+        $reserva = new Reserva;
 
         return view('reserva.index', ['idReserva'=> $idReserva,'reservas'=> $reserva->select('reserva.*', 'users.name as nomeUsuario', 'solicitantes.nome as nomeSolicitante', 'laboratorio.nome as nomeLaboratorio')->join('laboratorio', 'laboratorio.id', '=', 'reserva.laboratorio_id')->join('solicitantes', 'solicitantes.id', '=', 'reserva.solicitante_id')->join('users', 'users.id', '=', 'reserva.usuario_id')->where('reserva.laboratorio_id', '=', $idReserva)->whereDate('data', $dataHoje)->orderBy('data', 'desc')->paginate(15)]);
     }
@@ -67,8 +56,8 @@ class ReservaController extends Controller
         return view('reserva.index', ['idReserva'=> $idReserva,'reservas'=> $reserva->select('reserva.*', 'users.name as nomeUsuario', 'solicitantes.nome as nomeSolicitante', 'laboratorio.nome as nomeLaboratorio')->join('laboratorio', 'laboratorio.id', '=', 'reserva.laboratorio_id')->join('solicitantes', 'solicitantes.id', '=', 'reserva.solicitante_id')->join('users', 'users.id', '=', 'reserva.usuario_id')->where('reserva.laboratorio_id', '=', $idReserva)->whereMonth('data', $mesAtual)->orderBy('data', 'desc')->paginate(15)]);
     }
 
-    public function buscaSemana($idReserva){
-        return 'teste';
+    public function buscaSemana(Reserva $reserva, $idReserva){
+        return $reserva;
     }
 
     public function buscaTodos($idReserva){
