@@ -25,7 +25,8 @@ class ReservaController extends Controller
     }
     public function laboratorioIndex($idReserva){
 
-        $dataHoje = date('Y-m-d');
+        $dataHoje = date('Y-m-d', strtotime('-1 days', strtotime(date('y-m-d'))));
+
 
 
 

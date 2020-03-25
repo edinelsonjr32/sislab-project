@@ -16,6 +16,8 @@ class LaboratorioController extends Controller
      */
     public function index(Laboratorio $model)
     {
+
+
         return view('laboratorio.index', ['laboratorios' => $model->paginate(15)]);
     }
 
