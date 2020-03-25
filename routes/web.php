@@ -72,6 +72,19 @@ Route::group(['middleware' => 'auth'], function () {
     Route::put('profile', ['as' => 'profile.update', 'uses' => 'ProfileController@update']);
 
     Route::put('profile/password', ['as' => 'profile.password', 'uses' => 'ProfileController@password']);
+
+    Route::get('reserva/laboratorio/{id}/hoje', 'ReservaController@laboratorioIndex')->name('reserva.laboratorio.index');
+
+    Route::get('reserva/laboratorio/{id}/busca/mes', 'ReservaController@buscaMes')->name('reserva.busca.mes');
+
+    Route::get('reserva/laboratorio/{id}/busca/semana', 'ReservaController@buscaSemana')->name('reserva.busca.semana');
+
+    Route::get('reserva/laboratorio/{id}/busca/todos', 'ReservaController@buscaTodos')->name('reserva.busca.todos');
+
+    Route::post('reserva/laboratorio/{id}/busca/data', 'ReservaController@buscaData')->name('reserva.busca.data');
+
+    Route::get('reserva/laboratorio/{id}/criar/', 'ReservaController@create')->name('reserva.laboratorio.create');
+
 });
 
 

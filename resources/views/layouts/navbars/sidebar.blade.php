@@ -55,12 +55,43 @@
         </a>
       </li>
 
+
+
+
       <li class="nav-item{{ $activePage == 'reserva' ? ' active' : '' }}">
-        <a class="nav-link" href="{{ route('reserva.index') }}">
-          <i class="material-icons">perm_identity</i>
-          <p>{{ __('Reserva') }}</p>
+        <a class="nav-link" data-toggle="collapse" href="#pagesExamples" aria-expanded="true">
+          <i class="material-icons">insert_invitation</i>
+          <p> Reserva
+            <b class="caret"></b>
+          </p>
         </a>
+        <div class="collapse show" id="pagesExamples" style="">
+          <ul class="nav">
+              <?php
+                $laboratorios = DB::table('laboratorio')->select('laboratorio.*')->get();
+
+              ?>
+              @foreach ($laboratorios as $item)
+
+                <li class="nav-item">
+                    <a class="nav-link" href="{{route('reserva.laboratorio.index', $item->id)}}">
+                    <span class="sidebar-mini">
+
+                    </span>
+
+                    <span class="sidebar-normal">
+                        <i class="material-icons">star</i>
+                        {{$item->nome}}
+                    </span>
+                    </a>
+                </li>
+              @endforeach
+
+
+          </ul>
+        </div>
       </li>
+
 
 
     </ul>
