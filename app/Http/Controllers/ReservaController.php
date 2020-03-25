@@ -101,8 +101,25 @@ class ReservaController extends Controller
 
         $horaInicio =  $request->hora_inicio;
         $hora_fim = $request->hora_fim;
-        $dadosReserva = DB::table('reserva')->select('reserva.*', 'users.name as nomeUsuario', 'solicitantes.nome as nomeSolicitante', 'laboratorio.nome as nomeLaboratorio')->join('laboratorio', 'laboratorio.id', '=', 'reserva.laboratorio_id')->join('solicitantes', 'solicitantes.id', '=', 'reserva.solicitante_id')->join('users', 'users.id', '=', 'reserva.usuario_id')->whereBetween('reserva.hora_inicio',  [$request->hora_inicio, $request->hora_fim])->where('data', '=', $request->data)->where('reserva.laboratorio_id', '=', $request->laboratorio_id)->orderBy('hora_inicio', 'asc')->get();
+        $dadosReserva2 = DB::table('reserva')->select('reserva.*', 'users.name as nomeUsuario', 'solicitantes.nome as nomeSolicitante', 'laboratorio.nome as nomeLaboratorio')
+            ->join('laboratorio', 'laboratorio.id', '=', 'reserva.laboratorio_id')
+            ->join('solicitantes', 'solicitantes.id', '=', 'reserva.solicitante_id')
+            ->join('users', 'users.id', '=', 'reserva.usuario_id')
+            ->whereBetween('reserva.hora_fim',  [$request->hora_inicio, $request->hora_fim])
+            ->where('data', '=', $request->data)
+            ->where('reserva.laboratorio_id', '=', $request->laboratorio_id);
 
+
+        $dadosReserva = DB::table('reserva')->select('reserva.*', 'users.name as nomeUsuario', 'solicitantes.nome as nomeSolicitante', 'laboratorio.nome as nomeLaboratorio')
+            ->join('laboratorio', 'laboratorio.id', '=', 'reserva.laboratorio_id')
+            ->join('solicitantes', 'solicitantes.id', '=', 'reserva.solicitante_id')
+            ->join('users', 'users.id', '=', 'reserva.usuario_id')
+            ->whereBetween('reserva.hora_inicio', [$request->hora_inicio, $request->hora_fim])
+            ->where('data', '=', $request->data)
+            ->where('reserva.laboratorio_id', '=', $request->laboratorio_id)
+            ->union($dadosReserva2)
+            ->orderBy('hora_inicio', 'asc')
+            ->get();
 
 
         $idLaboratorio = $request->laboratorio_id;
