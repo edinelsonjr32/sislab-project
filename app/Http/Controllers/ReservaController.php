@@ -59,7 +59,64 @@ class ReservaController extends Controller
     }
 
     public function buscaSemana(Reserva $reserva, $idReserva){
-        return $reserva;
+
+        $dataHoje =  date('y-m-d');
+
+        $diaDaSemana = date('w', strtotime($dataHoje));
+
+
+
+        if($diaDaSemana == 0){
+            /**Domingo */
+            $dataInicio = date('h-m-d');
+            $dataFim = date('d/m/Y', strtotime('+6 days', strtotime($dataInicio)));
+
+            return 'domingo';
+            return view('reserva.index', ['idReserva' => $idReserva, 'reservas' => $reserva->select('reserva.*', 'users.name as nomeUsuario', 'solicitantes.nome as nomeSolicitante', 'laboratorio.nome as nomeLaboratorio')->join('laboratorio', 'laboratorio.id', '=', 'reserva.laboratorio_id')->join('solicitantes', 'solicitantes.id', '=', 'reserva.solicitante_id')->join('users', 'users.id', '=', 'reserva.usuario_id')->where('reserva.laboratorio_id', '=', $idReserva)->whereBetween('reserva.data', [$dataInicio, $dataFim])->orderBy('data', 'desc')->paginate(15)]);
+
+        } elseif ($diaDaSemana == 1) {
+            /**Segunda */
+            $dataInicio = date('d/m/Y', strtotime('-1 days', strtotime($dataHoje)));
+            $dataFim = date('d/m/Y', strtotime('+5 days', strtotime($dataHoje)));
+
+            return 'segunda';
+            return view('reserva.index', ['idReserva' => $idReserva, 'reservas' => $reserva->select('reserva.*', 'users.name as nomeUsuario', 'solicitantes.nome as nomeSolicitante', 'laboratorio.nome as nomeLaboratorio')->join('laboratorio', 'laboratorio.id', '=', 'reserva.laboratorio_id')->join('solicitantes', 'solicitantes.id', '=', 'reserva.solicitante_id')->join('users', 'users.id', '=', 'reserva.usuario_id')->where('reserva.laboratorio_id', '=', $idReserva)->whereBetween('reserva.data', [$dataInicio, $dataFim])->orderBy('data', 'desc')->paginate(15)]);
+        } elseif ($diaDaSemana == 2) {
+            /**Terça */
+            return 'terça';
+            $dataInicio = date('d/m/Y', strtotime('-2 days', strtotime($dataHoje)));
+            $dataFim = date('d/m/Y', strtotime('+4 days', strtotime($dataHoje)));
+
+            return view('reserva.index', ['idReserva' => $idReserva, 'reservas' => $reserva->select('reserva.*', 'users.name as nomeUsuario', 'solicitantes.nome as nomeSolicitante', 'laboratorio.nome as nomeLaboratorio')->join('laboratorio', 'laboratorio.id', '=', 'reserva.laboratorio_id')->join('solicitantes', 'solicitantes.id', '=', 'reserva.solicitante_id')->join('users', 'users.id', '=', 'reserva.usuario_id')->where('reserva.laboratorio_id', '=', $idReserva)->whereBetween('reserva.data', [$dataInicio, $dataFim])->orderBy('data', 'desc')->paginate(15)]);
+        } elseif ($diaDaSemana == 3) {
+            /**Quarta */
+            return 'quarta';
+            $dataInicio = date('d/m/Y', strtotime('-3 days', strtotime($dataHoje)));
+            $dataFim = date('d/m/Y', strtotime('+3 days', strtotime($dataHoje)));
+
+            return view('reserva.index', ['idReserva' => $idReserva, 'reservas' => $reserva->select('reserva.*', 'users.name as nomeUsuario', 'solicitantes.nome as nomeSolicitante', 'laboratorio.nome as nomeLaboratorio')->join('laboratorio', 'laboratorio.id', '=', 'reserva.laboratorio_id')->join('solicitantes', 'solicitantes.id', '=', 'reserva.solicitante_id')->join('users', 'users.id', '=', 'reserva.usuario_id')->where('reserva.laboratorio_id', '=', $idReserva)->whereBetween('reserva.data', [$dataInicio, $dataFim])->orderBy('data', 'desc')->paginate(15)]);
+        } elseif ($diaDaSemana == 4) {
+            /**Quinta */
+
+            $dataInicio = date('y-m-d', strtotime('-4 days', strtotime($dataHoje)));
+            $dataFim = date('y-m-d', strtotime('+2 days', strtotime($dataHoje)));
+
+            return view('reserva.index', ['idReserva' => $idReserva, 'reservas' => $reserva->select('reserva.*', 'users.name as nomeUsuario', 'solicitantes.nome as nomeSolicitante', 'laboratorio.nome as nomeLaboratorio')->join('laboratorio', 'laboratorio.id', '=', 'reserva.laboratorio_id')->join('solicitantes', 'solicitantes.id', '=', 'reserva.solicitante_id')->join('users', 'users.id', '=', 'reserva.usuario_id')->where('reserva.laboratorio_id', '=', $idReserva)->whereBetween('reserva.data', [$dataInicio, $dataFim])->orderBy('data', 'desc')->paginate(15)]);
+        } elseif ($diaDaSemana == 5) {
+            /**Sexta */
+            return 'sexta';
+            $dataInicio = date('d/m/Y', strtotime('-5 days', strtotime($dataHoje)));
+            $dataFim = date('d/m/Y', strtotime('+1 days', strtotime($dataInicio)));
+
+            return view('reserva.index', ['idReserva' => $idReserva, 'reservas' => $reserva->select('reserva.*', 'users.name as nomeUsuario', 'solicitantes.nome as nomeSolicitante', 'laboratorio.nome as nomeLaboratorio')->join('laboratorio', 'laboratorio.id', '=', 'reserva.laboratorio_id')->join('solicitantes', 'solicitantes.id', '=', 'reserva.solicitante_id')->join('users', 'users.id', '=', 'reserva.usuario_id')->where('reserva.laboratorio_id', '=', $idReserva)->whereBetween('reserva.data', [$dataInicio, $dataFim])->orderBy('data', 'desc')->paginate(15)]);
+        } elseif ($diaDaSemana == 6) {
+            /**Sabado */
+            return 'sabado';
+            $dataInicio = date('d/m/Y', strtotime('-6 days', strtotime($dataHoje)));
+            $dataFim = date('d/m/Y', strtotime('+0 days', strtotime($dataInicio)));
+
+            return view('reserva.index', ['idReserva' => $idReserva, 'reservas' => $reserva->select('reserva.*', 'users.name as nomeUsuario', 'solicitantes.nome as nomeSolicitante', 'laboratorio.nome as nomeLaboratorio')->join('laboratorio', 'laboratorio.id', '=', 'reserva.laboratorio_id')->join('solicitantes', 'solicitantes.id', '=', 'reserva.solicitante_id')->join('users', 'users.id', '=', 'reserva.usuario_id')->where('reserva.laboratorio_id', '=', $idReserva)->whereBetween('reserva.data', [$dataInicio, $dataFim])->orderBy('data', 'desc')->paginate(15)]);
+        }
     }
 
     public function buscaTodos($idReserva){

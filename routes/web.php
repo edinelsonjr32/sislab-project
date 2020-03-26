@@ -20,6 +20,9 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 
+
+
+
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home')->middleware('auth');
@@ -84,6 +87,25 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('reserva/laboratorio/{id}/busca/data', 'ReservaController@buscaData')->name('reserva.busca.data');
 
     Route::get('reserva/laboratorio/{id}/criar/', 'ReservaController@create')->name('reserva.laboratorio.create');
+
+
+
+
+
+    /**Rotas Dashboard */
+
+    Route::post('home/reserva/busca/data', 'HomeController@buscaData')->name('dashboard.reserva.busca.data');
+
+    Route::get('home/reserva/busca/mes', 'HomeController@buscaMes')->name('dashboard.reserva.busca.mes');
+
+    Route::get('home/reserva/busca/semana', 'HomeController@buscaSemana')->name('dashboard.reserva.busca.semana');
+
+    Route::get('home/reserva/busca/todos', 'HomeController@buscaTodos')->name('dashboard.reserva.busca.todos');
+
+    Route::get('home/reserva/criar/', 'HomeController@create')->name('dashboard.reserva.create');
+
+    Route::post('home/reserva/salvar', 'HomeController@store')->name('dashboard.reserva.salvar');
+
 
 });
 

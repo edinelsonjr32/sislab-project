@@ -18,12 +18,7 @@
     <link href="{{ asset('material') }}/demo/demo.css" rel="stylesheet" />
 </head>
 <body class="{{ $class ?? '' }}">
-@auth()
-    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-        @csrf
-    </form>
-    @include('layouts.page_templates.auth')
-@endauth
+
 @guest()
     @include('layouts.page_templates.guest')
 @endguest

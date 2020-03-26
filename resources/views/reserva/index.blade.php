@@ -3,6 +3,7 @@
 @section('content')
   <div class="content">
     <div class="container-fluid">
+
                 @if (session('status'))
                   <div class="row">
                     <div class="col-12">
@@ -80,11 +81,6 @@
                                     <form action="{{ route('reserva.destroy', $item) }}" method="post">
                                         @csrf
                                         @method('delete')
-
-                                        <a rel="tooltip" class="btn btn-success btn-link" href="{{ route('profile.edit') }}" data-original-title="" title="">
-                                            <i class="material-icons">remove_red_eye</i>
-                                            <div class="ripple-container"></div>
-                                          </a>
                                         <a rel="tooltip" class="btn btn-success btn-link" href="{{ route('reserva.edit', $item) }}" data-original-title="" title="">
                                           <i class="material-icons">edit</i>
                                           <div class="ripple-container"></div>
