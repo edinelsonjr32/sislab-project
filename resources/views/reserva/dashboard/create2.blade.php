@@ -107,6 +107,20 @@
                 </div>
 
                 <div class="row">
+                  <label class="col-sm-2 col-form-label">Observação</label>
+                  <div class="col-sm-7">
+                    <div class="form-group bmd-form-group">
+                        <div class="form-group{{ $errors->has('observacao') ? ' has-danger' : '' }}">
+                                <textarea cols="30" rows="10" class="form-control{{ $errors->has('observacao') ? ' is-invalid' : '' }}" name="observacao" id="input-description" type="text" placeholder="Observação" required="true" aria-required="true"></textarea>
+                                @if ($errors->has('observacao'))
+                                    <span id="name-error" class="error text-danger" for="input-observacao">{{ $errors->first('observacao') }}</span>
+                                @endif
+                        </div>
+
+                        </div>
+                  </div>
+                </div>
+                <div class="row">
                     <div class="card-footer ml-auto mr-auto">
                         <button type="submit" class="btn btn-primary">{{ __('Adicionar') }}</button>
                     </div>

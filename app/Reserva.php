@@ -16,6 +16,7 @@ class Reserva extends Model
         'hora_inicio',
         'hora_fim',
         'status',
-        'usuario_id'
+        'usuario_id',
+        'observacao'
     ];
 }
