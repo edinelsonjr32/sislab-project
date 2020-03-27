@@ -14,7 +14,7 @@
       <li class="nav-item{{ $activePage == 'dashboard' ? ' active' : '' }}">
         <a class="nav-link" href="{{ route('home') }}">
           <i class="material-icons">dashboard</i>
-            <p>{{ __('Dashboard') }}</p>
+            <p>{{ __('Inicio') }}</p>
         </a>
       </li>
       <li class="nav-item{{ $activePage == 'user-management' ? ' active' : '' }}">
