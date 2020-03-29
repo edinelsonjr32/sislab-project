@@ -208,7 +208,7 @@ class ReservaController extends Controller
 
 
         return view('reserva.detail' ,[
-            'reserva'=> $reservaEquipamento->select('reserva_equipamento.id', 'tipo_equipamento.nome as nomeTipoEquipamento', 'equipamento.tombo')
+            'reserva'=> $reservaEquipamento->select('reserva_equipamento.id', 'tipo_equipamento.nome as nomeTipoEquipamento', 'equipamento.*')
             ->join('equipamento', 'equipamento.id', '=', 'reserva_equipamento.equipamento_id')
             ->join('tipo_equipamento', 'tipo_equipamento.id', '=', 'equipamento.tipo_equipamento_id')
             ->where('reserva_equipamento.reserva_id', '=', $idReserva)->get(),
@@ -243,6 +243,10 @@ class ReservaController extends Controller
      * @return \Illuminate\Http\Response
      */
 
+    public function relatorio(Request $request, Reserva $reserva){
+        return $reserva->select('reserva.*', 'solicitantes.nome as nomeSolicitante')->join('solicitantes', 'solicitantes.id', '=', 'reserva.solicitante_id')->join('laboratorio', 'laboratorio.id', '=', 'reserva.laboratorio_id')->whereBetween('data', [$request->dataInicio, $request->dataFim])->get();
+
+    }
     public function adicionarEquipamento($idReserva){
 
 
@@ -250,7 +254,7 @@ class ReservaController extends Controller
             $equipamentos = new Equipamento();
 
 
-            return view('reserva.adicionar_equipamento', ['equipamentos'=> $equipamentos->select('equipamento.id as id', 'equipamento.tombo as tombo', 'tipo_equipamento.nome as noome')->join('tipo_equipamento', 'tipo_equipamento.id', '=', 'equipamento.tipo_equipamento_id')->get(), 'idReserva'=> $idReserva]);
+            return view('reserva.adicionar_equipamento', ['equipamentos'=> $equipamentos->select('equipamento.id as id', 'equipamento.tombo as tombo', 'tipo_equipamento.nome as nome')->join('tipo_equipamento', 'tipo_equipamento.id', '=', 'equipamento.tipo_equipamento_id')->get(), 'idReserva'=> $idReserva]);
     }
 
     public function salvarEquipamentoReserva(Request $request, ReservaEquipamento $reserva){
