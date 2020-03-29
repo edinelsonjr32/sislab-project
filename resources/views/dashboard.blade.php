@@ -281,6 +281,61 @@
                 </div>
               </div>
             </div>
+            <div class="col-md-4 ml-auto">
+              <div class="card card-stats">
+                <div class="card-header card-header-rose card-header-icon">
+                  <div class="card-icon">
+                    <i class="material-icons">equalizer</i>
+                  </div>
+                  <h3 class="card-title">Relatório</h3>
+                </div>
+                <div class="card-body">
+                    <div class="card-body ">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-header card-header-rose card-header-text">
+                                        <div class="card-icon">
+                                            <i class="material-icons">library_books</i>
+                                        </div>
+                                        <h4 class="card-title">Data</h4>
+                                </div>
+                                <div class="card-body ">
+                                    <form method="post" action="{{ route('reserva.laboratorio.relatorio') }}" autocomplete="off" class="form-horizontal">
+                                        @csrf
+                                        @method('post')
+
+                                        <div class="row">
+                                            <label class="col-sm-2 col-form-label">{{ __('Data Inicio') }}</label>
+                                            <div class="col-sm-10">
+                                                <div class="form-group">
+                                                    <input type="date" class="form-control datepicker" name="dataInicio" >
+                                                </select>
+                                                </div>
+
+                                            </div>
+
+
+                                        </div>
+                                        <div class="row">
+                                            <label class="col-sm-2 col-form-label">{{ __('Data Fim') }}</label>
+                                            <div class="col-sm-10">
+                                                <div class="form-group">
+                                                    <input type="date" class="form-control datepicker" name="dataFim" >
+                                                </select>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                         <button type="submit" class="btn btn-primary btn-lg btn-block">Buscar</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+              </div>
+            </div>
           </div>
     </div>
   </div>

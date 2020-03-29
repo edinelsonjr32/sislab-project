@@ -22,4 +22,16 @@ class Reserva extends Model
         'usuario_id',
         'observacao'
     ];
+
+    public function reservasEquipamentos()
+    {
+        return $this->hasMany(ReservaEquipamento::class, 'reserva_id');
+    }
+
+
+
+    public function solicitante()
+    {
+        return $this->belongsTo(Solicitante::class);
+    }
 }

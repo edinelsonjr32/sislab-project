@@ -191,8 +191,8 @@
                                         @method('post')
 
                                         <div class="row">
-                                            <label class="col-sm-2 col-form-label">{{ __('Data Inicio') }}</label>
-                                            <div class="col-sm-10">
+                                            <label class="col-sm-3 col-form-label">{{ __('Data Inicio') }}</label>
+                                            <div class="col-sm-8">
                                                 <div class="form-group">
                                                     <input type="date" class="form-control datepicker" name="dataInicio" >
                                                 </select>
@@ -203,8 +203,8 @@
 
                                         </div>
                                         <div class="row">
-                                            <label class="col-sm-2 col-form-label">{{ __('Data Inicio') }}</label>
-                                            <div class="col-sm-10">
+                                            <label class="col-sm-3 col-form-label">{{ __('Data Fim') }}</label>
+                                            <div class="col-sm-8">
                                                 <div class="form-group">
                                                     <input type="date" class="form-control datepicker" name="dataFim" >
                                                 </select>

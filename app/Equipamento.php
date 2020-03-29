@@ -3,8 +3,9 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\Pivot;
 
-class Equipamento extends Model
+class Equipamento extends Pivot
 {
     protected $table = 'equipamento';
 
@@ -14,5 +15,14 @@ class Equipamento extends Model
         'tipo_equipamento_id',
         'path'
     ];
+
+    public function reservasEquipamentos(){
+        return $this->hasMany(ReservaEquipamento::class);
+    }
+
+
+    public function tipoEquipamento(){
+        return $this->belongsTo(TipoEquipamento::class);
+    }
 
 }
