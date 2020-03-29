@@ -15,11 +15,10 @@ class CreateEquipamento extends Migration
     {
         Schema::create('equipamento', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('marca_equipamento_id');
-            $table->foreign('marca_equipamento_id')->references('id')->on('marca_equipamento');
             $table->unsignedBigInteger('tipo_equipamento_id');
             $table->foreign('tipo_equipamento_id')->references('id')->on('tipo_equipamento');
             $table->string('tombo');
+            $table->string('path');
             $table->text('descricao')->nullable();
             $table->timestamps();
         });

@@ -1,4 +1,4 @@
-@extends('layouts.app', ['activePage' => 'tipo-laboratorio', 'titlePage' => __('Tipos de Laboratório Páginal Inicial')])
+@extends('layouts.app', ['activePage' => 'gerenciamento_equipamento', 'titlePage' => __('Tipos Equipamento')])
 
 @section('content')
   <div class="content">
@@ -7,7 +7,7 @@
         <div class="col-md-12">
             <div class="card">
               <div class="card-header card-header-primary">
-                <h4 class="card-title ">{{ __('Tipos de Laboratório') }}</h4>
+                <h4 class="card-title ">{{ __('Tipos de Equipamento') }}</h4>
                 <p class="card-category"> {{ __('Gerenciamento de Tipo') }}</p>
               </div>
               <div class="card-body">
@@ -25,7 +25,7 @@
                 @endif
                 <div class="row">
                   <div class="col-12 text-right">
-                    <a href="{{ route('tipo_laboratorio.create') }}" class="btn btn-sm btn-primary">{{ __('Adicionar Tipo') }}</a>
+                    <a href="{{ route('tipo_equipamento.create') }}" class="btn btn-sm btn-primary">{{ __('Adicionar Tipo') }}</a>
                   </div>
                 </div>
 
@@ -52,16 +52,21 @@
                             {{ $tipo->nome }}
                           </td>
                           <td>
-                            {{ $tipo->status }}
+                            @if( $tipo->status == 1)
+                                Ativo
+
+                            @else
+                                Inativo
+                            @endif
                           </td>
                           <td class="td-actions text-right">
                             @if ($tipo->id)
-                              <form action="{{ route('tipo_laboratorio.destroy', $tipo) }}" method="post">
+                              <form action="{{ route('tipo_equipamento.destroy', $tipo) }}" method="post">
                                   @csrf
                                   @method('delete')
 
 
-                                  <a rel="tooltip" class="btn btn-success btn-link" href="{{ route('tipo_laboratorio.edit', $tipo) }}" data-original-title="" title="">
+                                  <a rel="tooltip" class="btn btn-success btn-link" href="{{ route('tipo_equipamento.edit', $tipo) }}" data-original-title="" title="">
                                     <i class="material-icons">edit</i>
                                     <div class="ripple-container"></div>
                                   </a>

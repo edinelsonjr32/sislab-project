@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\TipoLaboratorioRequest;
 use App\TipoLaboratorio;
-use Illuminate\Http\Request;
 
 class TipoLaboratorioController extends Controller
 {
@@ -60,6 +59,9 @@ class TipoLaboratorioController extends Controller
      */
     public function edit(TipoLaboratorio $tipoLaboratorio)
     {
+
+
+
         return view('tipo_laboratorios.edit', compact('tipoLaboratorio'));
     }
 

@@ -52,7 +52,7 @@ class ReservaController extends Controller
     public function buscaMes($idReserva){
 
         $mesAtual = date('m');
-        /*teste*/
+        /**/
 
         $reserva = new Reserva;
 
@@ -195,9 +195,11 @@ class ReservaController extends Controller
      * @param  \App\Reserva  $reserva
      * @return \Illuminate\Http\Response
      */
-    public function show(Reserva $reserva)
+    public function show(Reserva $reserva, $idReserva)
     {
-        //
+
+
+        return view('reserva.detail', ['dadosReserva'=> $reserva->select('reserva.*', 'users.name as nomeUsuario', 'solicitantes.nome as nomeSolicitante', 'laboratorio.nome as nomeLaboratorio')->join('laboratorio', 'laboratorio.id', '=', 'reserva.laboratorio_id')->join('solicitantes', 'solicitantes.id', '=', 'reserva.solicitante_id')->join('users', 'users.id', '=', 'reserva.usuario_id')->where('reserva.id', '=', $idReserva)->get()]);
     }
 
     /**

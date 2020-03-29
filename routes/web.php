@@ -66,7 +66,15 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::resource('tipo_solicitante', 'TipoSolicitanteController', ['except' => ['show']]);
 
+    Route::resource('tipo_equipamento', 'TipoEquipamentoController', ['except' => ['show']]);
+
+    Route::resource('item_equipamento', 'ItemEquipamentoController', ['except' => ['show']]);
+
+
+    Route::resource('equipamento', 'EquipamentoController', ['except' => ['show']]);
+
     Route::resource('solicitante', 'SolicitanteController', ['except' => ['show']]);
+
 
     Route::resource('reserva', 'ReservaController',  ['except'=> ['show']]);
 
@@ -89,6 +97,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('reserva/laboratorio/{id}/criar/', 'ReservaController@create')->name('reserva.laboratorio.create');
 
 
+    Route::get('reserva/laboratorio/{id}/detalhe/', 'ReservaController@show')->name('reserva.laboratorio.detalhe');
 
 
 

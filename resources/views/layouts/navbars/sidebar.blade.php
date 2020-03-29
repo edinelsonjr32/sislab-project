@@ -23,6 +23,44 @@
             <p>{{ __('Usuários') }}</p>
         </a>
       </li>
+      <li class="nav-item{{ $activePage == 'gerenciamento_equipamento' ? ' active' : '' }}">
+        <a class="nav-link" data-toggle="collapse" href="#pagesExamples" >
+          <i class="material-icons">insert_invitation</i>
+          <p> Ger. Equipamento
+            <b class="caret"></b>
+          </p>
+        </a>
+        <div class="collapse" id="pagesExamples" style="">
+          <ul class="nav">
+            <li class="nav-item">
+              <a class="nav-link" href="{{route('equipamento.index')}}">
+                    <span class="sidebar-mini">
+
+                    </span>
+
+                <span class="sidebar-normal">
+                        <i class="material-icons"></i>
+                        Equipamento
+                    </span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{route('tipo_equipamento.index')}}">
+                    <span class="sidebar-mini">
+
+                    </span>
+
+                <span class="sidebar-normal">
+                        <i class="material-icons"></i>
+                        Tipo Equipamento
+                    </span>
+              </a>
+            </li>
+
+
+          </ul>
+        </div>
+      </li>
       <li class="nav-item{{ $activePage == 'profile' ? ' active' : '' }}">
         <a class="nav-link" href="{{ route('profile.edit') }}">
           <i class="material-icons">perm_identity</i>
@@ -54,6 +92,8 @@
           <p>{{ __('Solicitante') }}</p>
         </a>
       </li>
+
+
 
 
 

@@ -1,4 +1,4 @@
-@extends('layouts.app', ['activePage' => 'tipo-laboratorio', 'titlePage' => __('Tipos de Laboratório Páginal Inicial')])
+@extends('layouts.app', ['activePage' => 'gerenciamento_equipamento', 'titlePage' => __('Solicitante Páginal Inicial')])
 
 @section('content')
   <div class="content">
@@ -7,8 +7,8 @@
         <div class="col-md-12">
             <div class="card">
               <div class="card-header card-header-primary">
-                <h4 class="card-title ">{{ __('Tipos de Laboratório') }}</h4>
-                <p class="card-category"> {{ __('Gerenciamento de Tipo') }}</p>
+                <h4 class="card-title ">{{ __('Equipamento') }}</h4>
+                <p class="card-category"> {{ __('Gerenciamento de Equipamento') }}</p>
               </div>
               <div class="card-body">
                 @if (session('status'))
@@ -25,43 +25,52 @@
                 @endif
                 <div class="row">
                   <div class="col-12 text-right">
-                    <a href="{{ route('tipo_laboratorio.create') }}" class="btn btn-sm btn-primary">{{ __('Adicionar Tipo') }}</a>
+                    <a href="{{ route('equipamento.create') }}" class="btn btn-sm btn-primary">{{ __('Adicionar Equipamento') }}</a>
                   </div>
                 </div>
-
-
                 <div class="table-responsive">
                   <table class="table">
                     <thead class=" text-primary">
+                        <th>
+                          {{ __('-') }}
+                      </th>
                       <th>
                           {{ __('Nome') }}
                       </th>
                       <th>
-                        {{ __('Status') }}
+                        {{ __('Tombo') }}
                       </th>
-
+                      <th>
+                        {{ __('Descrição') }}
+                      </th>
                       <th class="text-right">
                         {{ __('Ação') }}
                       </th>
                     </thead>
                     <tbody>
-
-                      @foreach($tipos as $tipo)
+                      @foreach($itens as $item)
                         <tr>
-                          <td>
-                            {{ $tipo->nome }}
+                         <td>
+                            <div class="avatar avatar-sm " style="width:100px; height:100px;overflow: hidden;">
+                                <img src="{{ URL::to('/') }}/images/{{ $item->path }}" alt="" style="max-width: 100px;">
+                            </div>
                           </td>
                           <td>
-                            {{ $tipo->status }}
+                            {{ $item->nomeTipo }}
+                          </td>
+                          <td>
+                            {{ $item->tombo }}
+                          </td>
+                          <td>
+                            {{ $item->descricao }}
                           </td>
                           <td class="td-actions text-right">
-                            @if ($tipo->id)
-                              <form action="{{ route('tipo_laboratorio.destroy', $tipo) }}" method="post">
+                            @if ($item->id)
+                              <form action="{{ route('equipamento.destroy', $item) }}" method="post">
                                   @csrf
                                   @method('delete')
 
-
-                                  <a rel="tooltip" class="btn btn-success btn-link" href="{{ route('tipo_laboratorio.edit', $tipo) }}" data-original-title="" title="">
+                                  <a rel="tooltip" class="btn btn-success btn-link" href="{{ route('equipamento.edit', $item) }}" data-original-title="" title="">
                                     <i class="material-icons">edit</i>
                                     <div class="ripple-container"></div>
                                   </a>
