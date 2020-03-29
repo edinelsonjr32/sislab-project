@@ -47,6 +47,9 @@
                       <th>
                         {{ __('Hora Fim') }}
                       </th>
+                      <th>
+                        {{ __('Solicitante') }}
+                      </th>
                     </thead>
                     <tbody>
                       @foreach ($testando as $dado)
@@ -55,6 +58,7 @@
                                 <td>{{date('d/m/y', strtotime($dado->data))}}</td>
                                 <td>{{$dado->hora_inicio}}</td>
                                 <td>{{$dado->hora_fim}}</td>
+                                <td>{{$dado->nomeSolicitante}}</td>
                             </tr>
                         @endforeach
                     </tbody>
@@ -107,6 +111,9 @@
                       <th>
                         {{ __('Hora Fim') }}
                       </th>
+                      <th>
+                        {{ __('Solicitante') }}
+                      </th>
                     </thead>
                     <tbody>
                       @foreach ($reservasEquipamentos as $item)
@@ -117,6 +124,7 @@
                                 <td>{{date('d/m/y', strtotime($item->data))}}</td>
                                 <td>{{$item->hora_inicio}}</td>
                                 <td>{{$item->hora_fim}}</td>
+                                <td>{{$dado->nomeSolicitante}}</td>
                             </tr>
                         @endforeach
                     </tbody>

@@ -257,9 +257,10 @@ class ReservaController extends Controller
 
         $testando = $reserva->select('reserva.*', 'solicitantes.nome as nomeSolicitante', 'users.name as nomeUsuario','laboratorio.nome')->join('laboratorio', 'laboratorio.id', '=', 'reserva.laboratorio_id')->join('solicitantes', 'solicitantes.id', '=', 'reserva.solicitante_id')->join('users', 'users.id', '=', 'reserva.usuario_id')->whereBetween('reserva.data', [$dataInicio, $dataFim])->orderBy('reserva.laboratorio_id', 'desc')->get();
 
-        $reservaEquipamento = new ReservaEquipamento;
-        $reservasEquipamentos =  $reservaEquipamento->select('reserva_equipamento.*', 'reserva.*', 'equipamento.tombo as tomboEquipamento', 'tipo_equipamento.nome as nomeTipo', 'laboratorio.nome as nomeLabin')->join('reserva', 'reserva.id','=',  'reserva_equipamento.reserva_id')->join('laboratorio', 'laboratorio.id', '=', 'reserva.laboratorio_id')->join('equipamento', 'equipamento.id', '=', 'reserva_equipamento.equipamento_id')->join('tipo_equipamento', 'tipo_equipamento.id', '=', 'equipamento.tipo_equipamento_id')->whereBetween('reserva.data', [$dataInicio, $dataFim])->orderBy('reserva_equipamento.equipamento_id', 'desc')->get();
 
+        $reservaEquipamento = new ReservaEquipamento;
+
+        $reservasEquipamentos =  $reservaEquipamento->select('reserva_equipamento.*', 'reserva.*', 'solicitantes.nome as nomeSolicitante', 'equipamento.tombo as tomboEquipamento', 'tipo_equipamento.nome as nomeTipo', 'laboratorio.nome as nomeLabin')->join('reserva', 'reserva.id','=',  'reserva_equipamento.reserva_id')->join('solicitantes', 'solicitantes.id', '=', 'reserva.solicitante_id')->join('laboratorio', 'laboratorio.id', '=', 'reserva.laboratorio_id')->join('equipamento', 'equipamento.id', '=', 'reserva_equipamento.equipamento_id')->join('tipo_equipamento', 'tipo_equipamento.id', '=', 'equipamento.tipo_equipamento_id')->whereBetween('reserva.data', [$dataInicio, $dataFim])->orderBy('reserva_equipamento.equipamento_id', 'desc')->get();
 
 
         return view('relatorio', ['testando'=>$testando, 'dataInicio'=>$dataInicio, 'dataFim'=>$dataFim, 'reservasEquipamentos'=> $reservasEquipamentos]);
