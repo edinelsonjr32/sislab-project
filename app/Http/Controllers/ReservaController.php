@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Equipamento;
 use App\Http\Requests\ReservaRequest;
 use App\Laboratorio;
 use App\Reserva;
+use App\ReservaEquipamento;
 use App\Solicitante;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -199,7 +201,22 @@ class ReservaController extends Controller
     {
 
 
-        return view('reserva.detail', ['dadosReserva'=> $reserva->select('reserva.*', 'users.name as nomeUsuario', 'solicitantes.nome as nomeSolicitante', 'laboratorio.nome as nomeLaboratorio')->join('laboratorio', 'laboratorio.id', '=', 'reserva.laboratorio_id')->join('solicitantes', 'solicitantes.id', '=', 'reserva.solicitante_id')->join('users', 'users.id', '=', 'reserva.usuario_id')->where('reserva.id', '=', $idReserva)->get()]);
+        $reservaEquipamento = new ReservaEquipamento();
+
+
+
+
+
+        return view('reserva.detail' ,[
+            'reserva'=> $reservaEquipamento->select('reserva_equipamento.id', 'tipo_equipamento.nome as nomeTipoEquipamento', 'equipamento.tombo')
+            ->join('equipamento', 'equipamento.id', '=', 'reserva_equipamento.equipamento_id')
+            ->join('tipo_equipamento', 'tipo_equipamento.id', '=', 'equipamento.tipo_equipamento_id')
+            ->where('reserva_equipamento.reserva_id', '=', $idReserva)->get(),
+            'dadosReserva'=> $reserva->select('reserva.*', 'users.name as nomeUsuario', 'solicitantes.nome as nomeSolicitante', 'laboratorio.nome as nomeLaboratorio')
+            ->join('laboratorio', 'laboratorio.id', '=', 'reserva.laboratorio_id')
+            ->join('solicitantes', 'solicitantes.id', '=', 'reserva.solicitante_id')
+            ->join('users', 'users.id', '=', 'reserva.usuario_id')
+            ->where('reserva.id', '=', $idReserva)->get()]);
     }
 
     /**
@@ -225,6 +242,51 @@ class ReservaController extends Controller
      * @param  \App\Reserva  $reserva
      * @return \Illuminate\Http\Response
      */
+
+    public function adicionarEquipamento($idReserva){
+
+
+
+            $equipamentos = new Equipamento();
+
+
+            return view('reserva.adicionar_equipamento', ['equipamentos'=> $equipamentos->select('equipamento.id as id', 'equipamento.tombo as tombo', 'tipo_equipamento.nome as noome')->join('tipo_equipamento', 'tipo_equipamento.id', '=', 'equipamento.tipo_equipamento_id')->get(), 'idReserva'=> $idReserva]);
+    }
+
+    public function salvarEquipamentoReserva(Request $request, ReservaEquipamento $reserva){
+        $dataReserva = new Reserva();
+
+        $data = $dataReserva->select('reserva.data')->where('reserva.id', '=', $request->reserva_id)->value('data');
+
+        $horaIninio = $dataReserva->select('reserva.hora_inicio')->where('reserva.id', '=', $request->reserva_id)->value('hora_inicio');
+
+        $horaFim = $dataReserva->select('reserva.hora_fim')->where('reserva.id', '=', $request->reserva_id)->value('hora_fim');
+
+
+        $dadosReserva = new ReservaEquipamento();
+
+        $reservasEquipamentos = $dadosReserva->select('reserva_equipamento.*')
+        ->join('reserva', 'reserva.id', '=', 'reserva_equipamento.reserva_id')
+        ->where('reserva.data', '=', $data)
+        ->where('reserva_equipamento.equipamento_id', '=', $request->equipamento_id)
+        ->whereBetween('reserva.hora_fim',  [$horaIninio, $horaFim]);
+
+        $reservasEquipamentos2 = $dadosReserva->select('reserva_equipamento.*')
+            ->join('reserva', 'reserva.id', '=', 'reserva_equipamento.reserva_id')
+            ->where('reserva.data', '=', $data)
+            ->where('reserva_equipamento.equipamento_id', '=', $request->equipamento_id)
+            ->whereBetween('reserva.hora_fim',  [$horaIninio, $horaFim])
+            ->union($reservasEquipamentos)
+            ->get();
+
+        if($reservasEquipamentos2 == '[]'){
+            $reserva->create($request->all());
+            return redirect()->route('reserva.laboratorio.detalhe', $request->reserva_id)->with('status', 'Equipamento cadastrado com sucesso');
+        }else{
+            return redirect()->route('reserva.laboratorio.detalhe', $request->reserva_id)->with('erro', 'Erro Este equipamento já está reservado em outra reserva, neste horário');
+        }
+    }
+
     public function update(Request $request, Reserva $reserva)
     {
 

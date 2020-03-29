@@ -17,6 +17,19 @@
                   </div>
                 @endif
 
+                @if (session('erro'))
+                  <div class="row">
+                    <div class="col-12">
+                      <div class="alert alert-danger">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                          <i class="material-icons">close</i>
+                        </button>
+                        <span>{{ session('erro') }}</span>
+                      </div>
+                    </div>
+                  </div>
+                @endif
+
         <div class="row">
             <div class="col-md-12">
                 <div class="card card-profile">
@@ -96,7 +109,7 @@
                                         </p>
 
                                         <div class="col-12 text-center">
-                                            <a href="http://localhost:8000/reserva/laboratorio/2/criar" class="btn btn-lg btn-rose"><i class="material-icons">add_circle</i> Adicionar Equipamento<div class="ripple-container"></div></a>
+                                            <a href="{{route('reserva.laboratorio.adicionar.equipamento', $dado->id)}}" class="btn btn-lg btn-rose"><i class="material-icons">add_circle</i> Adicionar Equipamento<div class="ripple-container"></div></a>
                                         </div>
 
                                         <div class="col-lg-12 col-md-12">
@@ -116,18 +129,26 @@
                                                             </th>
                                                         </thead>
                                                         <tbody>
+                                                            @foreach ($reserva as $item)
                                                             <tr>
-                                                                <td class="text-left">
-                                                                    teste
-                                                                </td>
 
-                                                                <td class="td-actions text-right">
-                                                                    <button type="button" class="btn btn-danger btn-link" data-original-title="" title="" onclick="confirm('{{ __("Você tem certeza que deseja excluir?") }}') ? this.parentElement.submit() : ''">
-                                                                        <i class="material-icons">close</i>
-                                                                        <div class="ripple-container"></div>
-                                                                    </button>
-                                                                </td>
+                                                                    <td class="text-left">
+                                                                    {{ $item->nomeTipoEquipamento }} - N° {{ $item->tombo }}
+                                                                    </td>
+                                                                    <td class="td-actions text-right">
+                                                                        <form action="{{ route('reserva.destroy', $item) }}" method="post">
+                                                                                @csrf
+                                                                                @method('delete')
+                                                                                <button type="button" class="btn btn-danger btn-link" data-original-title="" title="" onclick="confirm('{{ __("Você tem certeza que deseja excluir?") }}') ? this.parentElement.submit() : ''">
+                                                                                    <i class="material-icons">close</i>
+                                                                                    <div class="ripple-container"></div>
+                                                                                </button>
+                                                                            </form>
+                                                                    </td>
+
+
                                                             </tr>
+                                                            @endforeach
                                                         </tbody>
                                                     </table>
                                                 </div>

@@ -99,6 +99,10 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('reserva/laboratorio/{id}/detalhe/', 'ReservaController@show')->name('reserva.laboratorio.detalhe');
 
+    Route::get('reserva/laboratorio/{id}/adicionar_equipamento/', 'ReservaController@adicionarEquipamento')->name('reserva.laboratorio.adicionar.equipamento');
+
+    Route::post('reserva/laboratorio/adicionar_equipamento/', 'ReservaController@salvarEquipamentoReserva')->name('reserva.laboratorio.salva.reserva.equipamento');
+
 
 
     /**Rotas Dashboard */
