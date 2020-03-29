@@ -90,6 +90,7 @@
                       @endforeach
                     </tbody>
                   </table>
+                  {{ $itens->links() }}
                 </div>
               </div>
             </div>

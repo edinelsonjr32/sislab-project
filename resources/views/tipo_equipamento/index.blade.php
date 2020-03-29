@@ -86,6 +86,7 @@
                       @endforeach
                     </tbody>
                   </table>
+                  {{ $tipos->links() }}
                 </div>
               </div>
             </div>
