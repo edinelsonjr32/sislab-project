@@ -97,7 +97,7 @@
                   <div class="col-sm-7">
                     <div class="form-group bmd-form-group">
                         <div class="form-group{{ $errors->has('observacao') ? ' has-danger' : '' }}">
-                                <textarea cols="30" rows="10" class="form-control{{ $errors->has('observacao') ? ' is-invalid' : '' }}" name="observacao" id="input-description" type="text" placeholder="Observação" required="true" aria-required="true"></textarea>
+                                <textarea cols="30" rows="10" class="form-control{{ $errors->has('observacao') ? ' is-invalid' : '' }}" name="observacao" id="input-description" type="text" placeholder="Observação" aria-required="true"></textarea>
                                 @if ($errors->has('observacao'))
                                     <span id="name-error" class="error text-danger" for="input-observacao">{{ $errors->first('observacao') }}</span>
                                 @endif
