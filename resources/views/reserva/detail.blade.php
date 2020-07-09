@@ -122,6 +122,9 @@
                                                     <table class="table">
                                                         <thead class="text-left">
                                                             <th>
+                                                                {{ __('-') }}
+                                                            </th>
+                                                            <th>
                                                                 {{ __('Equipamento') }}
                                                             </th>
                                                             <th class="text-right" width="20%">
@@ -131,7 +134,11 @@
                                                         <tbody>
                                                             @foreach ($reserva as $item)
                                                             <tr>
-
+                                                                    <td>
+                                                                        <div class="avatar avatar-sm " style="width:100px; height:100px;overflow: hidden;">
+                                                                            <img src="{{ URL::to('/') }}/images/{{ $item->path }}" alt="" style="max-width: 100px;">
+                                                                        </div>
+                                                                    </td>
                                                                     <td class="text-left">
                                                                     {{ $item->nomeTipoEquipamento }} - N° {{ $item->tombo }}
                                                                     </td>
