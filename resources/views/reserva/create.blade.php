@@ -96,7 +96,7 @@
                     <div class="col-sm-7">
                         <div class="form-group bmd-form-group">
                             <div class="form-check">
-                                <input  type="radio" name="opcaoReserva" value="1" id="diariamente2">
+                                <input  type="radio" name="opcaoReserva" value="1" id="diariamente2" checked>
                                 <label class="form-check-label" for="gridRadios1">
                                     Uma Vez
                                 </label>
