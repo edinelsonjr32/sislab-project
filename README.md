@@ -5,7 +5,12 @@
 Projeto de Gestão de Laboratórios e equipamentos, desenvolvido e distribuido de forma gratuita para todos que queiram realizar a gestão eficiente de espaços de aula, como salas, laboratórios, academias e outros.
 
 Sistema realiza a gestão de:
-
+* Usuários
+* Equipamentos
+* Laboratórios
+* Solicitantes
+* Reservas de Salas 
+* Reservas de Equipamentos
 
 ![screencapture-localhost-8000-reserva-laboratorio-1-busca-todos-2020-07-10-12_32_12](https://user-images.githubusercontent.com/20133000/87186897-a8d1ff00-c2c2-11ea-8499-a692ff738a01.png)
 
@@ -13,32 +18,10 @@ Sistema realiza a gestão de:
 
 ## Instalação
 
-OS X & Linux:
+Linux:
+Em breve, tutorial de instalação do projeto.
 
-```sh
-npm install my-crazy-module --save
-```
 
-Windows:
-
-```sh
-edit autoexec.bat
-```
-
-## Exemplo de uso
-
-Alguns exemplos interessantes e úteis sobre como seu projeto pode ser utilizado. Adicione blocos de códigos e, se necessário, screenshots.
-
-_Para mais exemplos, consulte a [Wiki][wiki]._ 
-
-## Configuração para Desenvolvimento
-
-Descreva como instalar todas as dependências para desenvolvimento e como rodar um test-suite automatizado de algum tipo. Se necessário, faça isso para múltiplas plataformas.
-
-```sh
-make install
-npm test
-```
 
 ## Histórico de lançamentos
 
