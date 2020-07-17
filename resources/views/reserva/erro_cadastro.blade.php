@@ -17,22 +17,27 @@
 
                         <div class="card-body">
                                 @foreach ($dadosErro as $key => $values )
-                                    @foreach ($values as $item)
-                                        <div class="alert alert-primary">
-                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                                <i class="material-icons">close</i>
-                                            </button>
-                                            <span>
-                                                <b class="text-right"> Dados Reserva - </b> Horário: {{date('d/M/Y', strtotime($item->data))}} - {{$item->hora_inicio}}/{{$item->hora_fim}}, solicitante : {{$item->nomeSolicitante}}.
-                                            </span>
-                                        </div>
+                                    @foreach ($values as $data)
+                                        @foreach ($data as $item)
+                                            <div class="alert alert-primary">
+                                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                    <i class="material-icons">close</i>
+                                                </button>
+                                                <span>
+                                                    <b class="text-right"> Dados Reserva - </b> Horário: {{date('d/M/Y', strtotime($item->data))}} - {{$item->hora_inicio}}/{{$item->hora_fim}}, solicitante : {{$item->nomeSolicitante}}.
+                                                </span>
+                                            </div>
+                                        @endforeach
 
                                     @endforeach
                                 @endforeach
                         </div>
                     </div>
                 </div>
-            @endif
+                @else
+
+                @endif
+
 
 
             @if ($reservasCadastradas !== [])
@@ -43,23 +48,28 @@
                                 <p class="card-category"></p>
                             </div>
                             <div class="card-body">
+                                @foreach ($reservasCadastradas as $key => $values )
+                                    @foreach ($values as $item)
+                                        <div class="alert alert-primary">
+                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                <i class="material-icons">close</i>
+                                            </button>
+                                            <span>
+                                                <b class="text-right"> Reserva Cadastrada - </b> Horário: {{date('d/M/Y', strtotime($item->data))}} - {{$item->hora_inicio}}/{{$item->hora_fim}}.
+                                            </span>
+                                        </div>
 
-                                        @foreach ($reservasCadastradas as   $item )
+                                    @endforeach
+                                @endforeach
 
-                                                <div class="alert alert-info">
-                                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                                        <i class="material-icons">close</i>
-                                                    </button>
-                                                    <span>
-                                                        <b class="text-right"> Reserva Cadastrada - </b> Horário: {{date('d/M/Y', strtotime($item->data))}} - {{$item->hora_inicio}}/{{$item->hora_fim}}.
-                                                    </span>
-                                                </div>
 
-                                        @endforeach
 
                             </div>
                         </div>
                 </div>
+
+            @else
+
             @endif
 
 

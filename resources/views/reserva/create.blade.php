@@ -133,44 +133,44 @@
                         <div class="col-sm-7">
                             <div class="form-group bmd-form-group">
                                 <div class="form-check">
-                                    <input  type="checkbox" name="segunda" value="0" >
+                                    <input  type="checkbox" name="segunda" value="1" >
                                     <label class="form-check-label" for="gridRadios1">
                                         Segunda
                                     </label>
                                 </div>
 
                                 <div class="form-check">
-                                    <input  type="checkbox" name="terca" value="0" >
+                                    <input  type="checkbox" name="terca" value="1" >
                                     <label class="form-check-label" for="gridRadios1">
                                         Terça
                                     </label>
                                 </div>
                                 <div class="form-check">
-                                    <input  type="checkbox" name="quarta" value="0" >
+                                    <input  type="checkbox" name="quarta" value="1" >
                                     <label class="form-check-label" for="gridRadios1">
                                         Quarta
                                     </label>
                                 </div>
                                 <div class="form-check">
-                                    <input  type="checkbox" name="quinta" value="0" >
+                                    <input  type="checkbox" name="quinta" value="1" >
                                     <label class="form-check-label" for="gridRadios1">
                                         Quinta
                                     </label>
                                 </div>
                                 <div class="form-check">
-                                    <input  type="checkbox" name="sexta" value="0" >
+                                    <input  type="checkbox" name="sexta" value="1" >
                                     <label class="form-check-label" for="gridRadios1">
                                         Sexta
                                     </label>
                                 </div>
                                 <div class="form-check">
-                                    <input  type="checkbox" name="sabado" value="0" >
+                                    <input  type="checkbox" name="sabado" value="1" >
                                     <label class="form-check-label" for="gridRadios1">
                                         Sábado
                                     </label>
                                 </div>
                                 <div class="form-check">
-                                    <input  type="checkbox" name="domingo" value="0" >
+                                    <input  type="checkbox" name="domingo" value="1" >
                                     <label class="form-check-label" for="gridRadios1">
                                         Domingo
                                     </label>
