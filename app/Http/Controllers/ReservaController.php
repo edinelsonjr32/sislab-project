@@ -817,7 +817,25 @@ class ReservaController extends Controller
      */
     public function destroy(Reserva $reserva)
     {
-        $reserva->delete();
+
+        $idReserva = $reserva->id;
+
+
+        $reservas = DB::table('reserva')->select('reserva.*')->where('reserva.id', '=', $idReserva)->get();
+
+        $todasReservasEquipamento = DB::table('reserva_equipamento')->select('reserva.*', 'reserva_equipamento.*')->join('reserva', 'reserva.id', 'reserva_equipamento.reserva_id')->where('reserva.id', '=', $idReserva)->get();
+        if ($reservas == null) {
+            return redirect()->route('reserva.laboratorio.index', $reserva->laboratorio_id)->withStatus(__('Erro na Remoção de Equipamento, registro não existe.'));
+
+        } elseif ($reservas !== null) {
+            if ($todasReservasEquipamento == null) {
+                $reserva->delete();
+            } elseif ($todasReservasEquipamento !== null) {
+                $todasReservasEquiopamento = DB::table('reserva_equipamento')->join('reserva', 'reserva.id', 'reserva_equipamento.reserva_id')->where('reserva.id', '=', $idReserva)->delete();
+                $reserva->delete();
+            }
+        }
+
 
         return redirect()->route('reserva.laboratorio.index', $reserva->laboratorio_id)->withStatus(__('Reserva removida com sucesso.'));
     }

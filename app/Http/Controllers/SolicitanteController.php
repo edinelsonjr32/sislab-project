@@ -97,7 +97,25 @@ class SolicitanteController extends Controller
      */
     public function destroy(Solicitante $solicitante)
     {
-        $solicitante->delete();
+
+        $idSolicitante = $solicitante->id;
+
+        $reservas = DB::table('reserva')->select('reserva.*')->where('reserva.solicitante_id', '=', $idSolicitante)->get();
+
+        $todasReservasEquipamento = DB::table('reserva_equipamento')->select('reserva.*', 'reserva_equipamento.*')->join('reserva', 'reserva.id', 'reserva_equipamento.reserva_id')->where('reserva.solicitante_id', '=', $idSolicitante)->get();
+        if($reservas == null){
+            $solicitante->delete();
+        }elseif($reservas !== null){
+            if($todasReservasEquipamento == null){
+                $reservasSolicitante = DB::table('reserva')->where('reserva.solicitante_id', '=', $idSolicitante)->delete();
+                $solicitante->delete();
+            }elseif($todasReservasEquipamento !== null){
+                $todasReservasEquiopamento = DB::table('reserva_equipamento')->join('reserva', 'reserva.id', 'reserva_equipamento.reserva_id')->where('reserva.solicitante_id', '=', $idSolicitante)->delete();
+                $reservasSolicitante = DB::table('reserva')->where('reserva.solicitante_id', '=', $idSolicitante)->delete();
+                $solicitante->delete();
+            }
+
+        }
 
 
         return redirect(route('solicitante.index'))->withStatus(__('Solicitante excluido com sucesso!'));
