@@ -3,13 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Equipamento;
-use App\Http\Requests\ReservaRequest;
+
 use App\Laboratorio;
 use App\Reserva;
 use App\ReservaEquipamento;
 use App\Solicitante;
-use App\User;
-use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
