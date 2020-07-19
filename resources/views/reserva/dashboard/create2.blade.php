@@ -121,6 +121,110 @@
                   </div>
                 </div>
                 <div class="row">
+                    <label class="col-sm-2 col-form-label">Repetir Reserva</label>
+                    <div class="col-sm-7">
+                        <div class="form-group bmd-form-group">
+                            <div class="form-check">
+                                <input type="radio" name="opcaoReserva" value="1" id="diariamente2" checked>
+                                <label class="form-check-label" for="gridRadios1">
+                                    Uma Vez
+                                </label>
+                            </div>
+
+
+                            <div class="form-check">
+                                <input type="radio" name="opcaoReserva" value="2" id="semanalmente">
+                                <label class="form-check-label" for="gridRadios1">
+                                    Semanalmente
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input type="radio" name="opcaoReserva" value="3" id="diariamente">
+                                <label class="form-check-label" for="gridRadios1">
+                                    Diariamente
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input type="radio" name="opcaoReserva" value="5" id="personalizado">
+                                <label class="form-check-label" for="gridRadios1">
+                                    Personalizado
+                                </label>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+
+                <div id="personalizadoId">
+                    <div class="row">
+                        <label class="col-sm-2 col-form-label">Dias da Semana</label>
+                        <div class="col-sm-7">
+                            <div class="form-group bmd-form-group">
+                                <div class="form-check">
+                                    <input type="checkbox" name="segunda" value="1">
+                                    <label class="form-check-label" for="gridRadios1">
+                                        Segunda
+                                    </label>
+                                </div>
+
+                                <div class="form-check">
+                                    <input type="checkbox" name="terca" value="1">
+                                    <label class="form-check-label" for="gridRadios1">
+                                        Terça
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input type="checkbox" name="quarta" value="1">
+                                    <label class="form-check-label" for="gridRadios1">
+                                        Quarta
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input type="checkbox" name="quinta" value="1">
+                                    <label class="form-check-label" for="gridRadios1">
+                                        Quinta
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input type="checkbox" name="sexta" value="1">
+                                    <label class="form-check-label" for="gridRadios1">
+                                        Sexta
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input type="checkbox" name="sabado" value="1">
+                                    <label class="form-check-label" for="gridRadios1">
+                                        Sábado
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input type="checkbox" name="domingo" value="1">
+                                    <label class="form-check-label" for="gridRadios1">
+                                        Domingo
+                                    </label>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="dataFimId">
+                    <div class="row">
+                        <label class="col-sm-2 col-form-label">{{ __('Data Fim') }}</label>
+                        <div class="col-sm-7">
+                            <div class="form-group{{ $errors->has('dataFim') ? ' has-danger' : '' }}">
+                                <input class="form-control{{ $errors->has('dataFim') ? ' is-invalid' : '' }}" name="dataFim"
+                                    id="input-name" type="date" placeholder="{{ __('dd/mm/yyyy') }}" value="{{ old('dataFim') }}" />
+                                @if ($errors->has('dataFim'))
+                                <span id="name-error" class="error text-danger" for="input-name">{{ $errors->first('dataFim') }}</span>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
                     <div class="card-footer ml-auto mr-auto">
                         <button type="submit" class="btn btn-primary">{{ __('Adicionar') }}</button>
                     </div>
@@ -132,4 +236,72 @@
       </div>
     </div>
   </div>
+@endsection
+@section('script')
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    $( document ).ready(function() {
+        document.getElementById("personalizadoId").style.display = "none";
+        document.getElementById("dataFimId").style.display = "none";
+
+
+        $("#personalizado").click(function(){
+            if ($(this).prop('checked')){
+                document.getElementById("personalizadoId").style.display = "block";
+                document.getElementById("dataFimId").style.display = "block";
+                //$('input.dinheiro').val("");
+            } else {
+                document.getElementById("personalizadoId").style.display = "none";
+                document.getElementById("dataFimId").style.display = "none";
+                //$("input.dinheiro").val("");
+            }
+        });
+        $("#segundasexta").click(function(){
+            if ($(this).prop('checked')){
+                document.getElementById("personalizadoId").style.display = "none";
+                document.getElementById("dataFimId").style.display = "block";
+                //$('input.dinheiro').val("");
+            } else {
+                document.getElementById("personalizadoId").style.display = "none";
+                document.getElementById("dataFimId").style.display = "none";
+                //$("input.dinheiro").val("");
+            }
+        });
+        $("#diariamente").click(function(){
+            if ($(this).prop('checked')){
+                document.getElementById("personalizadoId").style.display = "none";
+                document.getElementById("dataFimId").style.display = "block";
+                //$('input.dinheiro').val("");
+            } else {
+                document.getElementById("personalizadoId").style.display = "none";
+                document.getElementById("dataFimId").style.display = "none";
+                //$("input.dinheiro").val("");
+            }
+        });
+        $("#semanalmente").click(function(){
+            if ($(this).prop('checked')){
+                document.getElementById("personalizadoId").style.display = "none";
+                document.getElementById("dataFimId").style.display = "block";
+                //$('input.dinheiro').val("");
+            } else {
+                document.getElementById("personalizadoId").style.display = "none";
+                document.getElementById("dataFimId").style.display = "none";
+                //$("input.dinheiro").val("");
+            }
+        });
+        $("#diariamente2").click(function(){
+            if ($(this).prop('checked')){
+                document.getElementById("personalizadoId").style.display = "none";
+                document.getElementById("dataFimId").style.display = "none";
+                //$('input.dinheiro').val("");
+            } else {
+                document.getElementById("personalizadoId").style.display = "none";
+                document.getElementById("dataFimId").style.display = "none";
+                //$("input.dinheiro").val("");
+            }
+        });
+
+
+    });
+</script>
 @endsection

@@ -251,7 +251,11 @@ class ReservaController extends Controller
                     $dadosErro[] = $dadosReserva;
                 }
             }
-            return view('reserva.erro_cadastro', ['dadosErro' => $dadosErro, 'reservasCadastradas' => $reservasCadastradas, 'idLaboratorio' => $request->laboratorio_id]);
+
+
+
+
+            return view('reserva.confirmacao_reserva_semana', ['dadosErro' => $dadosErro, 'reservasCadastradas' => $reservasCadastradas, 'idLaboratorio' => $request->laboratorio_id]);
 
 
         } elseif ($request->opcaoReserva == 3) {

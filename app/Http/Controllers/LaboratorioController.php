@@ -6,6 +6,7 @@ use App\Http\Requests\LaboratorioRequest;
 use App\Laboratorio;
 use App\TipoLaboratorio;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class LaboratorioController extends Controller
 {
@@ -90,7 +91,25 @@ class LaboratorioController extends Controller
      */
     public function destroy(Laboratorio $laboratorio)
     {
-        $laboratorio->delete();
+        $idLaboratorio = $laboratorio->id;
+
+
+        $reservas = DB::table('reserva')->select('reserva.*')->where('reserva.laboratorio_id', '=', $idLaboratorio)->get();
+
+
+        $todasReservasEquipamento = DB::table('reserva_equipamento')->select('reserva.*', 'reserva_equipamento.*')->join('reserva', 'reserva.id', 'reserva_equipamento.reserva_id')->where('reserva.laboratorio_id', '=', $idLaboratorio)->get();
+        if ($reservas == null) {
+            $$laboratorio->delete();
+        } elseif ($reservas !== null) {
+            if ($todasReservasEquipamento == null) {
+                $reservasSolicitante = DB::table('reserva')->where('reserva.laboratorio_id', '=', $idLaboratorio)->delete();
+                $laboratorio->delete();
+            } elseif ($todasReservasEquipamento !== null) {
+                $todasReservasEquiopamento = DB::table('reserva_equipamento')->join('reserva', 'reserva.id', 'reserva_equipamento.reserva_id')->where('reserva.laboratorio_id', '=', $idLaboratorio)->delete();
+                $reservasSolicitante = DB::table('reserva')->where('reserva.laboratorio_id', '=', $idLaboratorio)->delete();
+                $laboratorio->delete();
+            }
+        }
 
         return redirect()->route('laboratorio.index')->withStatus(__('Laboratório Excluido com sucesso.'));
     }

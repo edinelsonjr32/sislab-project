@@ -33,7 +33,7 @@ class HomeController extends Controller
 
         $dataHoje = date('Y-m-d');
 
-        
+
 
         return view('dashboard', [ 'reservas' => $reserva->select('reserva.*', 'users.name as nomeUsuario', 'solicitantes.nome as nomeSolicitante', 'laboratorio.nome as nomeLaboratorio')->join('laboratorio', 'laboratorio.id', '=', 'reserva.laboratorio_id')->join('solicitantes', 'solicitantes.id', '=', 'reserva.solicitante_id')->join('users', 'users.id', '=', 'reserva.usuario_id')->whereDate('data', $dataHoje)->orderBy('data', 'desc')->paginate(15)]);
 
@@ -131,54 +131,313 @@ class HomeController extends Controller
     public function store(Request $request, Reserva $reserva)
     {
 
-        $horaInicio =  $request->hora_inicio;
-        $hora_fim = $request->hora_fim;
-        $dadosReserva2 = DB::table('reserva')->select('reserva.*', 'users.name as nomeUsuario', 'solicitantes.nome as nomeSolicitante', 'laboratorio.nome as nomeLaboratorio')
+
+
+        if ($request->opcaoReserva == 1) {
+            $horaInicio =  $request->hora_inicio;
+            $hora_fim = $request->hora_fim;
+            $dadosReserva2 = DB::table('reserva')->select('reserva.*', 'users.name as nomeUsuario', 'solicitantes.nome as nomeSolicitante', 'laboratorio.nome as nomeLaboratorio')
             ->join('laboratorio', 'laboratorio.id', '=', 'reserva.laboratorio_id')
             ->join('solicitantes', 'solicitantes.id', '=', 'reserva.solicitante_id')
             ->join('users', 'users.id', '=', 'reserva.usuario_id')
             ->whereBetween('reserva.hora_fim',  [$request->hora_inicio, $request->hora_fim])
-            ->where('data', '=', $request->data)
-            ->where('reserva.laboratorio_id', '=', $request->laboratorio_id);
-
-
-        $dadosReserva = DB::table('reserva')->select('reserva.*', 'users.name as nomeUsuario', 'solicitantes.nome as nomeSolicitante', 'laboratorio.nome as nomeLaboratorio')
+                ->where('data', '=', $request->data)
+                ->where('reserva.laboratorio_id', '=', $request->laboratorio_id);
+            $dadosReserva = DB::table('reserva')->select('reserva.*', 'users.name as nomeUsuario', 'solicitantes.nome as nomeSolicitante', 'laboratorio.nome as nomeLaboratorio')
             ->join('laboratorio', 'laboratorio.id', '=', 'reserva.laboratorio_id')
             ->join('solicitantes', 'solicitantes.id', '=', 'reserva.solicitante_id')
             ->join('users', 'users.id', '=', 'reserva.usuario_id')
             ->whereBetween('reserva.hora_inicio', [$request->hora_inicio, $request->hora_fim])
-            ->where('data', '=', $request->data)
-            ->where('reserva.laboratorio_id', '=', $request->laboratorio_id)
-            ->union($dadosReserva2)
-            ->orderBy('hora_inicio', 'asc')
-            ->get();
+                ->where('data', '=', $request->data)
+                ->where('reserva.laboratorio_id', '=', $request->laboratorio_id)
+                ->union($dadosReserva2)
+                ->orderBy('hora_inicio', 'asc')
+                ->get();
+            $idLaboratorio = $request->laboratorio_id;
+            if ($dadosReserva == '[]') {
+                $reserva = new Reserva();
+                $reserva->laboratorio_id = $request->laboratorio_id;
+                $reserva->usuario_id = $request->usuario_id;
+                $reserva->data = $request->data;
+                $reserva->hora_inicio = $request->hora_inicio;
+                $reserva->hora_fim = $request->hora_fim;
+                $reserva->solicitante_id = $request->solicitante_id;
+                $reserva->observacao = $request->observacao;
+                $reserva->save();
+
+                $idReserva = $reserva->id;
 
 
-        $idLaboratorio = $request->laboratorio_id;
-        if ($dadosReserva == '[]') {
+                return redirect()->route('reserva.laboratorio.detalhe', $idReserva)->withStatus(__('Reserva criada com sucesso.'));
+            } else {
+
+                $solicitantes = Solicitante::all();
+                $laboratorios = Laboratorio::all();
+
+                return view('reserva.create2', ['solicitantes' => $solicitantes, 'laboratorios' => $laboratorios, 'idLaboratorio' => $idLaboratorio, 'dadosReserva' => $dadosReserva]);
+            }
+        } elseif ($request->opcaoReserva == 2) {
+            $dataInicio = $request->data;
+            $dataFim =  $request->dataFim;
 
 
-            $reserva = new Reserva();
-            $reserva->laboratorio_id = $request->laboratorio_id;
-            $reserva->usuario_id = $request->usuario_id;
-            $reserva->data = $request->data;
-            $reserva->hora_inicio = $request->hora_inicio;
-            $reserva->hora_fim = $request->hora_fim;
-            $reserva->solicitante_id = $request->solicitante_id;
-            $reserva->observacao = $request->observacao;
-            $reserva->save();
+            $diferencaData = (strtotime($dataFim) - strtotime($dataInicio)) / 86400;
 
-            $idReserva = $reserva->id;
+            $diferencaData = $diferencaData + 1;
+            $semanas = $diferencaData / 7;
+
+            $reservasCadastradas = array();
+            $dadosErro = array();
+            for ($i = 0; $i < $semanas; $i++) {
+                $horaInicio =  $request->hora_inicio;
+                $hora_fim = $request->hora_fim;
+                $dataReserva = date('Y-m-d', strtotime('+' . $i . 'weeks', strtotime($dataInicio)));
+                $dadosReserva2 = DB::table('reserva')->select('reserva.*', 'users.name as nomeUsuario', 'solicitantes.nome as nomeSolicitante', 'laboratorio.nome as nomeLaboratorio')
+                ->join('laboratorio', 'laboratorio.id', '=', 'reserva.laboratorio_id')
+                ->join('solicitantes', 'solicitantes.id', '=', 'reserva.solicitante_id')
+                ->join('users', 'users.id', '=', 'reserva.usuario_id')
+                ->whereBetween('reserva.hora_fim',  [$request->hora_inicio, $request->hora_fim])
+                    ->where('data', '=', $dataReserva)
+                    ->where('reserva.laboratorio_id', '=', $request->laboratorio_id);
+                $dadosReserva = DB::table('reserva')->select('reserva.*', 'users.name as nomeUsuario', 'solicitantes.nome as nomeSolicitante', 'laboratorio.nome as nomeLaboratorio')
+                ->join('laboratorio', 'laboratorio.id', '=', 'reserva.laboratorio_id')
+                ->join('solicitantes', 'solicitantes.id', '=', 'reserva.solicitante_id')
+                ->join('users', 'users.id', '=', 'reserva.usuario_id')
+                ->whereBetween('reserva.hora_inicio', [$request->hora_inicio, $request->hora_fim])
+                    ->where('data', '=', $dataReserva)
+                    ->where('reserva.laboratorio_id', '=', $request->laboratorio_id)
+                    ->union($dadosReserva2)
+                    ->orderBy('hora_inicio', 'asc')
+                    ->get();
+                $idLaboratorio = $request->laboratorio_id;
+                if ($dadosReserva == '[]') {
+                    $reserva = new Reserva();
+                    $reserva->laboratorio_id = $request->laboratorio_id;
+                    $reserva->usuario_id = $request->usuario_id;
+                    $reserva->data = $dataReserva;
+                    $reserva->hora_inicio = $request->hora_inicio;
+                    $reserva->hora_fim = $request->hora_fim;
+                    $reserva->solicitante_id = $request->solicitante_id;
+                    $reserva->observacao = $request->observacao;
+                    $reserva->save();
+
+                    $reservasCadastradas[] = $reserva;
+                } else {
+
+                    $dadosErro[] = $dadosReserva;
+                }
+            }
 
 
-            return redirect()->route('reserva.laboratorio.detalhe', $idReserva)->withStatus(__('Reserva criada com sucesso.'));
 
-        } else {
 
-            $solicitantes = Solicitante::all();
-            $laboratorios = Laboratorio::all();
+            return view('reserva.confirmacao_reserva_semana', ['dadosErro' => $dadosErro, 'reservasCadastradas' => $reservasCadastradas, 'idLaboratorio' => $request->laboratorio_id]);
+        } elseif ($request->opcaoReserva == 3) {
+            //diariamente
+            $dataInicio = $request->data;
+            $dataFim =  $request->dataFim;
 
-            return view('reserva.dashboard.create2', ['solicitantes' => $solicitantes, 'laboratorios' => $laboratorios, 'idLaboratorio' => $idLaboratorio, 'dadosReserva' => $dadosReserva]);
+
+            $diferencaData = (strtotime($dataFim) - strtotime($dataInicio)) / 86400;
+
+            $diferencaData = $diferencaData + 1;
+            $reservasCadastradas = array();
+            $dadosErro = array();
+            for ($i = 0; $i < $diferencaData; $i++) {
+
+                $dataReserva = date('Y-m-d', strtotime('+' . $i . 'days', strtotime($dataInicio)));
+                $dadosReserva2 = DB::table('reserva')->select('reserva.*', 'users.name as nomeUsuario', 'solicitantes.nome as nomeSolicitante', 'laboratorio.nome as nomeLaboratorio')
+                ->join('laboratorio', 'laboratorio.id', '=', 'reserva.laboratorio_id')
+                ->join('solicitantes', 'solicitantes.id', '=', 'reserva.solicitante_id')
+                ->join('users', 'users.id', '=', 'reserva.usuario_id')
+                ->whereBetween('reserva.hora_fim',  [$request->hora_inicio, $request->hora_fim])
+                    ->where('data', '=', $dataReserva)
+                    ->where('reserva.laboratorio_id', '=', $request->laboratorio_id);
+                $dadosReserva = DB::table('reserva')->select('reserva.*', 'users.name as nomeUsuario', 'solicitantes.nome as nomeSolicitante', 'laboratorio.nome as nomeLaboratorio')
+                ->join('laboratorio', 'laboratorio.id', '=', 'reserva.laboratorio_id')
+                ->join('solicitantes', 'solicitantes.id', '=', 'reserva.solicitante_id')
+                ->join('users', 'users.id', '=', 'reserva.usuario_id')
+                ->whereBetween('reserva.hora_inicio', [$request->hora_inicio, $request->hora_fim])
+                    ->where('data', '=', $dataReserva)
+                    ->where('reserva.laboratorio_id', '=', $request->laboratorio_id)
+                    ->union($dadosReserva2)
+                    ->orderBy('hora_inicio', 'asc')
+                    ->get();
+                $idLaboratorio = $request->laboratorio_id;
+                if ($dadosReserva == '[]') {
+                    $reserva = new Reserva();
+                    $reserva->laboratorio_id = $request->laboratorio_id;
+                    $reserva->usuario_id = $request->usuario_id;
+                    $reserva->data = $dataReserva;
+                    $reserva->hora_inicio = $request->hora_inicio;
+                    $reserva->hora_fim = $request->hora_fim;
+                    $reserva->solicitante_id = $request->solicitante_id;
+                    $reserva->observacao = $request->observacao;
+                    $reserva->save();
+                    $reservasCadastradas[] = $reserva;
+                } else {
+
+                    $dadosErro[] = $dadosReserva;
+                }
+            }
+
+            return view('reserva.erro_cadastro', ['dadosErro' => $dadosErro, 'reservasCadastradas' => $reservasCadastradas, 'idLaboratorio' => $request->laboratorio_id]);
+        } elseif ($request->opcaoReserva == 5) {
+            //diariamente
+            $dataInicio = $request->data;
+            $dataFim =  $request->dataFim;
+
+            $dataHoje = date('Y-m-d');
+
+
+
+            $reservasCadastradas = array();
+            $dadosErro = array();
+
+
+
+
+            if ($request->segunda == 1) {
+
+                $teste = $this->diasIntervaloData($dataInicio, $dataFim, 1);
+
+                $dataInicioReserva = $teste[0];
+                $dataFimReserva = $teste[1];
+
+                $diferencaData = (strtotime($dataFimReserva) - strtotime($dataInicioReserva)) / 86400;
+
+                $semanas = intdiv($diferencaData, 7) + 1;
+
+                $diferencaData = $diferencaData + 1;
+
+
+                $teste2 = $this->salvarReservaPersonalizada($request, $semanas, $dataInicioReserva);
+                $dadosErro[] =  $teste2[1];
+                $reservasCadastradas[] =  $teste2[0];
+            }
+            if ($request->terca == 1) {
+
+
+                $teste = $this->diasIntervaloData($dataInicio, $dataFim, 2);
+
+
+                $dataInicioReserva = $teste[0];
+                $dataFimReserva = $teste[1];
+
+                $diferencaData = (strtotime($dataFimReserva) - strtotime($dataInicioReserva)) / 86400;
+                $semanas = intdiv($diferencaData, 7);
+
+
+                $diferencaData = $diferencaData + 1;
+
+                $teste2 = $this->salvarReservaPersonalizada($request, $semanas, $dataInicioReserva);
+                $dadosErro[] =  $teste2[1];
+                $reservasCadastradas[] =  $teste2[0];
+            }
+            if ($request->quarta == 1) {
+
+
+                $teste = $this->diasIntervaloData($dataInicio, $dataFim, 3);
+
+
+
+
+                $dataInicioReserva = $teste[0];
+                $dataFimReserva = $teste[1];
+
+                $diferencaData = (strtotime($dataFimReserva) - strtotime($dataInicioReserva)) / 86400;
+                $semanas = intdiv($diferencaData, 7) + 1;
+
+
+                $diferencaData = $diferencaData + 1;
+
+                $teste2 = $this->salvarReservaPersonalizada($request, $semanas, $dataInicioReserva);
+                $dadosErro[] =  $teste2[1];
+                $reservasCadastradas[] =  $teste2[0];
+            }
+            if ($request->quinta == 1) {
+
+
+                $teste = $this->diasIntervaloData($dataInicio, $dataFim, 4);
+
+
+                $dataInicioReserva = $teste[0];
+                $dataFimReserva = $teste[1];
+
+                $diferencaData = (strtotime($dataFimReserva) - strtotime($dataInicioReserva)) / 86400;
+                $semanas = intdiv($diferencaData, 7) + 1;
+
+
+                $diferencaData = $diferencaData + 1;
+
+                $teste2 = $this->salvarReservaPersonalizada($request, $semanas, $dataInicioReserva);
+                $dadosErro[] =  $teste2[1];
+                $reservasCadastradas[] =  $teste2[0];
+            }
+            if ($request->sexta == 1) {
+
+
+                $teste = $this->diasIntervaloData($dataInicio, $dataFim, 5);
+
+
+
+                $dataInicioReserva = $teste[0];
+                $dataFimReserva = $teste[1];
+
+                $diferencaData = (strtotime($dataFimReserva) - strtotime($dataInicioReserva)) / 86400;
+                $semanas = intdiv($diferencaData, 7) + 1;
+
+
+                $diferencaData = $diferencaData + 1;
+
+                $teste2 = $this->salvarReservaPersonalizada($request, $semanas, $dataInicioReserva);
+                $dadosErro[] =  $teste2[1];
+                $reservasCadastradas[] =  $teste2[0];
+            }
+            if ($request->sabado == 1) {
+
+
+                $teste = $this->diasIntervaloData($dataInicio, $dataFim, 6);
+
+
+
+                $dataInicioReserva = $teste[0];
+                $dataFimReserva = $teste[1];
+
+                $diferencaData = (strtotime($dataFimReserva) - strtotime($dataInicioReserva)) / 86400;
+                $semanas = intdiv($diferencaData, 7) + 1;
+
+
+                $diferencaData = $diferencaData + 1;
+
+                $teste2 = $this->salvarReservaPersonalizada($request, $semanas, $dataInicioReserva);
+                $dadosErro[] =  $teste2[1];
+                $reservasCadastradas[] =  $teste2[0];
+            }
+            if ($request->domingo == 1) {
+
+                $teste = $this->diasIntervaloData($dataInicio, $dataFim, 0);
+
+
+
+                $dataInicioReserva = $teste[0];
+                $dataFimReserva = $teste[1];
+
+                $diferencaData = (strtotime($dataFimReserva) - strtotime($dataInicioReserva)) / 86400;
+                $semanas = intdiv($diferencaData, 7) + 1;
+
+
+                $diferencaData = $diferencaData + 1;
+
+                $teste2 = $this->salvarReservaPersonalizada($request, $semanas, $dataInicioReserva);
+                $dadosErro[] =  $teste2[1];
+                $reservasCadastradas[] =  $teste2[0];
+            }
+
+
+
+
+            return view('reserva.erro_cadastro', ['dadosErro' => $dadosErro, 'reservasCadastradas' => $reservasCadastradas, 'idLaboratorio' => $request->laboratorio_id]);
         }
     }
 }

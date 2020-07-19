@@ -6,6 +6,7 @@ use App\Equipamento;
 use App\EquipamentoTemItem;
 use App\TipoEquipamento;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class EquipamentoController extends Controller
 {
@@ -179,7 +180,16 @@ class EquipamentoController extends Controller
      */
     public function destroy(Equipamento $equipamento)
     {
-        $equipamento->delete();
+        $idEquipamento = $equipamento->id;
+
+
+        $todasReservasEquipamento = DB::table('reserva_equipamento')->select('reserva_equipamento.*')->where('reserva_equipamento.equipamento_id', '=', $idEquipamento)->get();
+        if ($todasReservasEquipamento == null) {
+            $equipamento->delete();
+        } elseif ($todasReservasEquipamento !== null) {
+            $reservasSolicitante = DB::table('reserva_equipamento')->select('reserva_equipamento.*')->where('reserva_equipamento.equipamento_id', '=', $idEquipamento)->delete();
+            $equipamento->delete();
+        }
 
         return redirect()->route('equipamento.index')->with('status', 'Equipamento Removido Com Sucesso');
     }

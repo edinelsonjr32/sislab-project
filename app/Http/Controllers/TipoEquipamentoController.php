@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\TipoEquipamentoRequest;
 use App\TipoEquipamento;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class TipoEquipamentoController extends Controller
 {
@@ -85,7 +86,32 @@ class TipoEquipamentoController extends Controller
      */
     public function destroy(TipoEquipamento $tipoEquipamento)
     {
-        $tipoEquipamento->delete();
+        $idTipoEquipamento = $tipoEquipamento->id;
+
+        $equipamentos = DB::table('equipamento')->select('equipamento.*')->where('equipamento.tipo_equipamento_id', '=', $idTipoEquipamento)->get();
+
+        if ($equipamentos == null) {
+            //se solicitante or vazio ele exclui somente o tipo solicitante
+            $tipoEquipamento->delete();
+        } elseif ($equipamentos !== null) {
+
+            //se solicitante for diferente devazio ele não exclui ainda, ele precisa saber se existe reserva e reserva equipamento
+
+
+            $todasReservas = DB::table('reserva')->select('reserva_equipamento.*')->join('reserva_equipamento', 'reserva.id', 'reserva_equipamento.reserva_id')->join('equipamento', 'equipamento.id', 'reserva_equipamento.equipamento_id')->where('equipamento.tipo_equipamento_id', '=', $idTipoEquipamento)->get();
+
+            if ($todasReservas == null) {
+                //se existir não existir reserva, exclui  solicitantes e tipo solicitantes
+                $equipamentos = DB::table('equipamento')->select('equipamento.*')->where('equipamento.tipo_equipamentos_id', '=', $idTipoEquipamento)->delete();
+                $tipoEquipamento->delete();
+            } elseif ($todasReservas !== null) {
+                //se existir reserva, deverá analisar se existe reserva de equipamento
+
+                $todasReservas = DB::table('reserva')->select('reserva_equipamento.*')->join('reserva_equipamento', 'reserva.id', 'reserva_equipamento.reserva_id')->join('equipamento', 'equipamento.id', 'reserva_equipamento.equipamento_id')->where('equipamento.tipo_equipamento_id', '=', $idTipoEquipamento)->delete();
+                $equipamentos = DB::table('equipamento')->select('equipamento.*')->where('equipamento.tipo_equipamento_id', '=', $idTipoEquipamento)->delete();
+                $tipoEquipamento->delete();
+            }
+        }
 
         return redirect(route('tipo_equipamento.index'))->with('status', 'Dados excluidos com sucesso');
     }

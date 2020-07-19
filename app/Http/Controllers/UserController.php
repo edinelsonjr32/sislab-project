@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\User;
 use App\Http\Requests\UserRequest;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
@@ -81,6 +82,25 @@ class UserController extends Controller
      */
     public function destroy(User  $user)
     {
+        $idUsuario = $user->id;
+
+        $reservas = DB::table('reserva')->select('reserva.*')->where('reserva.usuario_id', '=', $idUsuario)->get();
+
+
+
+        $todasReservasEquipamento = DB::table('reserva_equipamento')->select('reserva.*', 'reserva_equipamento.*')->join('reserva', 'reserva.id', 'reserva_equipamento.reserva_id')->where('reserva.usuario_id', '=', $idUsuario)->get();
+        if ($reservas == null) {
+            $user->delete();
+        } elseif ($reservas !== null) {
+            if ($todasReservasEquipamento == null) {
+                $reservasSolicitante = DB::table('reserva')->where('reserva.usuario_id', '=', $idUsuario)->delete();
+                $user->delete();
+            } elseif ($todasReservasEquipamento !== null) {
+                $todasReservasEquiopamento = DB::table('reserva_equipamento')->join('reserva', 'reserva.id', 'reserva_equipamento.reserva_id')->where('reserva.usuario_id', '=', $idUsuario)->delete();
+                $reservasSolicitante = DB::table('reserva')->where('reserva.usuario_id', '=', $idUsuario)->delete();
+                $user->delete();
+            }
+        }
         $user->delete();
 
         return redirect()->route('user.index')->withStatus(__('User successfully deleted.'));
