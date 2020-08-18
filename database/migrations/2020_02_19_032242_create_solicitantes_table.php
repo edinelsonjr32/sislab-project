@@ -15,6 +15,10 @@ class CreateSolicitantesTable extends Migration
     {
         Schema::create('solicitantes', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->string('nome');
+            $table->string('email')->nullable();
+            $table->unsignedBigInteger('tipo_solicitante_id');
+            $table->foreign('tipo_solicitante_id')->references('id')->on('tipo_solicitante');
             $table->timestamps();
         });
     }

@@ -16,6 +16,10 @@ class SolicitanteTableSeeder extends Seeder
         //cadastro em massa de docentes no sistema
 
         DB::table('solicitantes')->insert(['nome' => 'ADJANNY ESTELA SANTOS DE SOUZA', 'email' => 'null', 'tipo_solicitante_id' => 1]);
+        /**
+         *
+         *
+         */
         DB::table('solicitantes')->insert(['nome' => 'ADRIANA KIRZNER PIRES', 'email' => 'null', 'tipo_solicitante_id' => 1]);
         DB::table('solicitantes')->insert(['nome' => 'ADRYA DA SILVA FIGUEIREDO', 'email' => 'null', 'tipo_solicitante_id' => 1]);
         DB::table('solicitantes')->insert(['nome' => 'ALBERTO MARIANO GUSMAO TOLENTINO', 'email' => 'null', 'tipo_solicitante_id' => 1]);

@@ -43,6 +43,7 @@ class EquipamentoController extends Controller
 
 
 
+
         if ($file = $request->file('imagem')) {
 
             $equipamento->tipo_equipamento_id = $request->tipo_equipamento_id;
@@ -76,6 +77,20 @@ class EquipamentoController extends Controller
 
             return redirect()->route('equipamento.index')->with('status', 'Equipamento Adicionado Com Sucesso');
 
+        }else{
+            $equipamento->tipo_equipamento_id = $request->tipo_equipamento_id;
+
+
+            $equipamento->tombo = $request->tombo;
+
+            $equipamento->path = "";
+
+            $equipamento->descricao = $request->descricao;
+
+
+            $equipamento->save();
+
+            return redirect()->route('equipamento.index')->with('status', 'Equipamento Adicionado Com Sucesso');
         }
 
 
