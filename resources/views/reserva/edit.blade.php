@@ -23,10 +23,7 @@
 
 
                 <input type="hidden" name="reserva_id" value="{{$idReserva}}">
-                <input type="hidden" name="laboratorio_id" value="{{$reserva->laboratorio_id}}">
-
-
-
+                
                 <div class="row">
                   <label class="col-sm-2 col-form-label">{{ __('Data') }}</label>
                   <div class="col-sm-7">
@@ -72,6 +69,22 @@
                                 <option value="{{$tipo->id}}" {{ (old('solicitante_id') == $tipo->id ? 'selected'  : ($reserva->solicitante_id  == $tipo->id ? 'selected' : '')) }}>{{$tipo->nome}}</option>
                             @endforeach
                         </select>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="row">
+                    <label class="col-sm-2 col-form-label">{{ __('Laboratório') }}</label>
+                    <div class="col-sm-7">
+                        <div class="form-group">
+                            <select class="form-control" data-style="btn btn-link" id="laboratorio_id"
+                                name="laboratorio_id">
+                                @foreach ($laboratorios as $tipo)
+                                <option value="{{$tipo->id}}"
+                                    {{ (old('laboratorio_id') == $tipo->id ? 'selected'  : ($reserva->laboratorio_id  == $tipo->id ? 'selected' : '')) }}>
+                                    {{$tipo->nome}}</option>
+                                @endforeach
+                            </select>
                         </div>
 
                     </div>

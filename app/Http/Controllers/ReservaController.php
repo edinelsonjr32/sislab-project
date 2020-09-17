@@ -155,6 +155,7 @@ class ReservaController extends Controller
     {
 
 
+
         if ($request->opcaoReserva == 1) {
             $horaInicio =  $request->hora_inicio;
             $hora_fim = $request->hora_fim;
@@ -313,13 +314,11 @@ class ReservaController extends Controller
 
 
         } elseif ($request->opcaoReserva == 5) {
-            //diariamente
+            //personalizado
             $dataInicio = $request->data;
             $dataFim =  $request->dataFim;
 
             $dataHoje = date('Y-m-d');
-
-
 
             $reservasCadastradas = array();
             $dadosErro = array();
@@ -546,7 +545,6 @@ class ReservaController extends Controller
 
 
 
-
         $dataFimReserva = $dataFim;
 
 
@@ -555,11 +553,13 @@ class ReservaController extends Controller
 
         $diaSemanaFim = date('w', strtotime($dataFim));
 
+
         $dataInicioFim = array();
+
 
         if ($diaSemanaDataMarcada < $diaSemanaInicio) {
 
-            $diferenca = $dataInicio - $diaSemanaDataMarcada;
+            $diferenca = $diaSemanaInicio - $diaSemanaDataMarcada;
 
             if($diferenca = 1){
                 $dataInicioFim[] = $diaInicioReserva = date('Y-m-d', strtotime('+ 6 days', strtotime($dataInicio)));
@@ -567,6 +567,7 @@ class ReservaController extends Controller
                 $dataInicioFim[] = $diaInicioReserva = date('Y-m-d', strtotime('+ 5 days', strtotime($dataInicio)));
             } elseif ($diferenca = 3) {
                 $dataInicioFim[] = $diaInicioReserva = date('Y-m-d', strtotime('+ 4 days', strtotime($dataInicio)));
+
             } elseif ($diferenca = 4) {
                 $dataInicioFim[] = $diaInicioReserva = date('Y-m-d', strtotime('+ 3 days', strtotime($dataInicio)));
             } elseif ($diferenca = 5) {
@@ -577,11 +578,9 @@ class ReservaController extends Controller
         }
         if ($diaSemanaDataMarcada == $diaSemanaInicio) {
 
-
             $dataInicioFim[] = $diaInicioReserva = date('Y-m-d', strtotime($dataInicio));
         }
         if($diaSemanaDataMarcada > $diaSemanaInicio){
-
 
             $diferenca =   $diaSemanaDataMarcada - $diaSemanaInicio;
 
@@ -600,7 +599,7 @@ class ReservaController extends Controller
             $dataInicioFim[] =  date('Y-m-d', strtotime($dataFimReserva));
         }
         if ($diaSemanaDataMarcada > $dataFimReserva) {
-            $diferenca   = $diaSemanaDataMarcada - $dataFimReserva;
+            $diferenca   = $diaSemanaDataMarcada - $diaSemanaFim;
 
             if ($diferenca = 1) {
                 $dataInicioFim[] = date('Y-m-d', strtotime('- 6 days', strtotime($dataFimReserva)));
@@ -660,6 +659,7 @@ class ReservaController extends Controller
             $solicitantes = Solicitante::all();
             $laboratorios = Laboratorio::all();
 
+
             return view('reserva.edit', ['solicitantes'=> $solicitantes, 'laboratorios'=>$laboratorios, 'idReserva' => $reserva->id, 'reserva'=> $reserva]);
 
     }
@@ -674,45 +674,66 @@ class ReservaController extends Controller
 
     public function relatorio(Request $request, Reserva $reserva){
 
+
+        $laboratorios = DB::table('laboratorio')->select('laboratorio.id')->get();
+
+
+        $equipamentos = DB::table('equipamento')->select('equipamento.id')->get();
+
         $dataInicio = $request->dataInicio;
 
         $dataFim = $request->dataFim;
 
-
-
         $reserva = new Reserva;
 
-        $testando = $reserva->select('reserva.*', 'solicitantes.nome as nomeSolicitante', 'users.name as nomeUsuario','laboratorio.nome')->join('laboratorio', 'laboratorio.id', '=', 'reserva.laboratorio_id')->join('solicitantes', 'solicitantes.id', '=', 'reserva.solicitante_id')->join('users', 'users.id', '=', 'reserva.usuario_id')->whereBetween('reserva.data', [$dataInicio, $dataFim])->orderBy('reserva.laboratorio_id', 'desc')->get();
+
+
+        $dadosReservaLabin = array();
+
+        $dadosReservaEquipamento = array();
+
+        foreach($laboratorios as $laboratorio){
+            $dadosReservaLabin[] =
+            $reserva->select('reserva.*', 'solicitantes.nome as nomeSolicitante', 'users.name as nomeUsuario', 'laboratorio.nome')
+            ->join('laboratorio', 'laboratorio.id', '=', 'reserva.laboratorio_id')
+            ->join('solicitantes', 'solicitantes.id', '=', 'reserva.solicitante_id')
+            ->join('users', 'users.id', '=', 'reserva.usuario_id')
+            ->whereBetween('reserva.data', [$dataInicio, $dataFim])
+            ->where('reserva.laboratorio_id', '=', $laboratorio->id)
+            
+            ->orderBy('reserva.data', 'ASC')
+            ->get();
+        }
+
 
 
         $reservaEquipamento = new ReservaEquipamento;
 
-        $reservasEquipamentos =  $reservaEquipamento->select('reserva_equipamento.*', 'reserva.*', 'solicitantes.nome as nomeSolicitante', 'equipamento.tombo as tomboEquipamento', 'tipo_equipamento.nome as nomeTipo', 'laboratorio.nome as nomeLabin')->join('reserva', 'reserva.id','=',  'reserva_equipamento.reserva_id')->join('solicitantes', 'solicitantes.id', '=', 'reserva.solicitante_id')->join('laboratorio', 'laboratorio.id', '=', 'reserva.laboratorio_id')->join('equipamento', 'equipamento.id', '=', 'reserva_equipamento.equipamento_id')->join('tipo_equipamento', 'tipo_equipamento.id', '=', 'equipamento.tipo_equipamento_id')->whereBetween('reserva.data', [$dataInicio, $dataFim])->orderBy('reserva_equipamento.equipamento_id', 'desc')->get();
+        foreach($equipamentos as $dado){
+            $dadosReservaEquipamento[] =
+            $reservaEquipamento
+                ->select('reserva_equipamento.*', 'reserva.*', 'solicitantes.nome as nomeSolicitante', 'equipamento.tombo as tomboEquipamento', 'tipo_equipamento.nome as nomeTipo', 'laboratorio.nome as nomeLabin')
 
 
-        return view('relatorio', ['testando'=>$testando, 'dataInicio'=>$dataInicio, 'dataFim'=>$dataFim, 'reservasEquipamentos'=> $reservasEquipamentos]);
-
-
-
-
-
-
-
-
-
-        /**
-         *
-         *
-         * ->reservasEquipamentos()->select('reserva_equipamento.status', 'tipo_equipamento.nome')->join('equipamento', 'equipamento.id', '=', 'reserva_equipamento.equipamento_id')->join('tipo_equipamento', 'tipo_equipamento.id', '=', 'equipamento.tipo_equipamento_id')
-         */
-
+                ->join('reserva', 'reserva.id', '=',  'reserva_equipamento.reserva_id')
+                ->join('solicitantes', 'solicitantes.id', '=', 'reserva.solicitante_id')
+                ->join('laboratorio', 'laboratorio.id', '=', 'reserva.laboratorio_id')
+                ->join('equipamento', 'equipamento.id', '=', 'reserva_equipamento.equipamento_id')
+                ->join('tipo_equipamento', 'tipo_equipamento.id', '=', 'equipamento.tipo_equipamento_id')
+                ->whereBetween('reserva.data', [$dataInicio, $dataFim])
+                ->where('reserva_equipamento.equipamento_id', '=', $dado->id)
+                ->orderBy('reserva.hora_inicio', 'asc')
+                ->get();
+        }
 
 
 
 
 
 
-        //return $reserva->select('reserva.*', 'solicitantes.nome as nomeSolicitante')->join('solicitantes', 'solicitantes.id', '=', 'reserva.solicitante_id')->join('laboratorio', 'laboratorio.id', '=', 'reserva.laboratorio_id')->whereBetween('data', [$request->dataInicio, $request->dataFim])->get();
+        return view('relatorio', ['testando'=> $dadosReservaLabin, 'dataInicio'=>$dataInicio, 'dataFim'=>$dataFim, 'reservasEquipamentos'=> $dadosReservaEquipamento]);
+
+
 
     }
     public function adicionarEquipamento($idReserva){
@@ -762,6 +783,8 @@ class ReservaController extends Controller
 
 
 
+
+
         $horaInicio =  $request->hora_inicio;
         $hora_fim = $request->hora_fim;
 
@@ -789,9 +812,6 @@ class ReservaController extends Controller
             ->union($dadosReserva)
             ->orderBy('hora_inicio', 'asc')
             ->get();
-
-
-
 
         $idReserva = $request->reserva_id;
 
