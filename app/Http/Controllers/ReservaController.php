@@ -700,15 +700,10 @@ class ReservaController extends Controller
             ->join('users', 'users.id', '=', 'reserva.usuario_id')
             ->whereBetween('reserva.data', [$dataInicio, $dataFim])
             ->where('reserva.laboratorio_id', '=', $laboratorio->id)
-            
             ->orderBy('reserva.data', 'ASC')
             ->get();
         }
-
-
-
         $reservaEquipamento = new ReservaEquipamento;
-
         foreach($equipamentos as $dado){
             $dadosReservaEquipamento[] =
             $reservaEquipamento
