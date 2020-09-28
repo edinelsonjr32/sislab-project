@@ -35,48 +35,50 @@
                             </div>
                         </div>
 
-                        @foreach ($testando as $item)
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead class=" text-primary text-center">
+                                    <th>
+                                        {{ __('Laboratório') }}
+                                    </th>
+                                    <th>
+                                        {{ __('Data') }}
+                                    </th>
+                                    <th>
+                                        {{ __('Hora Inicio') }}
+                                    </th>
+                                    <th>
+                                        {{ __('Hora Fim') }}
+                                    </th>
+                                    <th>
+                                        {{ __('Solicitante') }}
+                                    </th>
+                                </thead>
+                                <tbody>
 
-                        @if($item == '[]')
-                        @elseif($item !== '[]')
-                            <div class="table-responsive">
-                                <table class="table">
-                                    <thead class=" text-primary text-center">
-                                        <th>
-                                            {{ __('Laboratório') }}
-                                        </th>
-                                        <th>
-                                            {{ __('Data') }}
-                                        </th>
-                                        <th>
-                                            {{ __('Hora Inicio') }}
-                                        </th>
-                                        <th>
-                                            {{ __('Hora Fim') }}
-                                        </th>
-                                        <th>
-                                            {{ __('Solicitante') }}
-                                        </th>
-                                    </thead>
-                                    <tbody>
+                                    @foreach ($testando as $item)
 
-                                        @foreach ($item as $dado)
-                                        <tr class="text-center">
-                                            <td><b>{{$dado->nome}}</b></td>
-                                            <td>{{date('d/m/y', strtotime($dado->data))}}</td>
-                                            <td>{{$dado->hora_inicio}}</td>
-                                            <td>{{$dado->hora_fim}}</td>
-                                            <td>{{$dado->nomeSolicitante}}</td>
-                                        </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
+                                    @if($item == '[]')
+                                    @elseif($item !== '[]')
+                                    @foreach ($item as $dado)
+                                    <tr class="text-center">
+                                        <td><b>{{$dado->nome}}</b></td>
+                                        <td>{{date('d/m/y', strtotime($dado->data))}}</td>
+                                        <td>{{$dado->hora_inicio}}</td>
+                                        <td>{{$dado->hora_fim}}</td>
+                                        <td>{{$dado->nomeSolicitante}}</td>
+                                    </tr>
+                                    @endforeach
+                                    @endif
+
+                                    @endforeach
+
+                                </tbody>
+                            </table>
 
 
-                            </div>
-                        @endif
+                        </div>
 
-                        @endforeach
                     </div>
                 </div>
             </div>
@@ -103,10 +105,6 @@
                         @endif
 
                         <div class="table-responsive">
-                            @foreach ($reservasEquipamentos as $itens)
-
-                            @if($itens == '[]')
-                            @elseif($itens !== '[]')
                             <div class="table-responsive">
                                 <table class="table">
                                     <thead class=" text-primary text-center">
@@ -134,6 +132,13 @@
                                     </thead>
                                     <tbody>
 
+                                        @foreach ($reservasEquipamentos as $itens)
+
+                                        @if($itens == '[]')
+                                        @elseif($itens !== '[]')
+
+                                        @endif
+
                                         @foreach ($itens as $item)
                                         <tr class="text-center">
                                             <td><b>{{$item->nomeTipo}}</b></td>
@@ -145,23 +150,16 @@
                                             <td>{{$dado->nomeSolicitante}}</td>
                                         </tr>
                                         @endforeach
-                                    
+
+
+                                        @endforeach
+
                                     </tbody>
-                                </table>
-
-
                             </div>
-                            @endif
-
-                            @endforeach
-
-
-
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-@endsection
+    @endsection
