@@ -11,14 +11,14 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
+
+
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
-
+Route::get('/', 'HomeController@index')->name('home');
 
 
 
@@ -104,6 +104,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('reserva/laboratorio/{id}/adicionar_equipamento/', 'ReservaController@adicionarEquipamento')->name('reserva.laboratorio.adicionar.equipamento');
 
     Route::post('reserva/laboratorio/adicionar_equipamento/', 'ReservaController@salvarEquipamentoReserva')->name('reserva.laboratorio.salva.reserva.equipamento');
+    Route::delete('reserva/laboratorio/remover_equipamento/{id}', 'ReservaController@destroyReservaEquipamento')->name('reserva.laboratorio.destroy.reserva.equipamento');
 
 
 

@@ -13,16 +13,9 @@ use Illuminate\Support\Facades\DB;
 
 class ReservaController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index(Reserva $reserva)
     {
-
-
-        /**/
 
     }
     public function laboratorioIndex($idReserva){
@@ -36,10 +29,6 @@ class ReservaController extends Controller
 
         return view('reserva.index', ['idReserva'=> $idReserva,'reservas'=> $reserva->select('reserva.*', 'users.name as nomeUsuario', 'solicitantes.nome as nomeSolicitante', 'laboratorio.nome as nomeLaboratorio')->join('laboratorio', 'laboratorio.id', '=', 'reserva.laboratorio_id')->join('solicitantes', 'solicitantes.id', '=', 'reserva.solicitante_id')->join('users', 'users.id', '=', 'reserva.usuario_id')->where('reserva.laboratorio_id', '=', $idReserva)->whereDate('data', $dataHoje)->orderBy('data', 'desc')->paginate(15)]);
     }
-
-
-
-
 
     public function buscaData(Request $request, $idReserva){
 
@@ -132,11 +121,7 @@ class ReservaController extends Controller
 
         return view('reserva.index', ['idReserva'=> $idReserva,'reservas'=> $reserva->select('reserva.*', 'users.name as nomeUsuario', 'solicitantes.nome as nomeSolicitante', 'laboratorio.nome as nomeLaboratorio')->join('laboratorio', 'laboratorio.id', '=', 'reserva.laboratorio_id')->join('solicitantes', 'solicitantes.id', '=', 'reserva.solicitante_id')->join('users', 'users.id', '=', 'reserva.usuario_id')->where('reserva.laboratorio_id', '=', $idReserva)->orderBy('data', 'desc')->paginate(15)]);
     }
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function create($idLaboratorio)
     {
         $solicitantes = Solicitante::all();
@@ -145,12 +130,7 @@ class ReservaController extends Controller
         return view('reserva.create', ['solicitantes'=> $solicitantes, 'laboratorios'=>$laboratorios, 'idLaboratorio' => $idLaboratorio]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+
     public function store(Request $request, Reserva $reserva)
     {
 
@@ -619,12 +599,7 @@ class ReservaController extends Controller
 
         return $dataInicioFim;
     }
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Reserva  $reserva
-     * @return \Illuminate\Http\Response
-     */
+
     public function show(Reserva $reserva, $idReserva)
     {
 
@@ -636,7 +611,7 @@ class ReservaController extends Controller
 
 
         return view('reserva.detail' ,[
-            'reserva'=> $reservaEquipamento->select('reserva_equipamento.id', 'tipo_equipamento.nome as nomeTipoEquipamento', 'equipamento.*')
+            'reserva'=> $reservaEquipamento->select('reserva_equipamento.id as idEquipamento', 'tipo_equipamento.nome as nomeTipoEquipamento', 'equipamento.*')
             ->join('equipamento', 'equipamento.id', '=', 'reserva_equipamento.equipamento_id')
             ->join('tipo_equipamento', 'tipo_equipamento.id', '=', 'equipamento.tipo_equipamento_id')
             ->where('reserva_equipamento.reserva_id', '=', $idReserva)->get(),
@@ -647,12 +622,6 @@ class ReservaController extends Controller
             ->where('reserva.id', '=', $idReserva)->get()]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Reserva  $reserva
-     * @return \Illuminate\Http\Response
-     */
     public function edit(Reserva $reserva)
     {
 
@@ -663,14 +632,6 @@ class ReservaController extends Controller
             return view('reserva.edit', ['solicitantes'=> $solicitantes, 'laboratorios'=>$laboratorios, 'idReserva' => $reserva->id, 'reserva'=> $reserva]);
 
     }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Reserva  $reserva
-     * @return \Illuminate\Http\Response
-     */
 
     public function relatorio(Request $request, Reserva $reserva){
 
@@ -826,15 +787,11 @@ class ReservaController extends Controller
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Reserva  $reserva
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(Reserva $reserva)
     {
 
+
+        return $reserva;
         $idReserva = $reserva->id;
 
 
@@ -855,5 +812,25 @@ class ReservaController extends Controller
 
 
         return redirect()->route('reserva.laboratorio.index', $reserva->laboratorio_id)->withStatus(__('Reserva removida com sucesso.'));
+    }
+
+    public function destroyReservaEquipamento(Request $request,  $reserva){
+
+
+
+        $reservaEquipamento = ReservaEquipamento::find($reserva);
+
+        $idReserva = $reservaEquipamento->reserva_id;
+
+
+        if ($reservaEquipamento == '[]') {
+            return 'vazio';
+        }else{
+            if(ReservaEquipamento::destroy($reserva)){
+                return redirect()->route('reserva.laboratorio.detalhe', $idReserva)->with('status', 'Remoção de equipamento realizado com sucesso');
+            }else{
+                return redirect()->route('reserva.laboratorio.detalhe', $idReserva)->with('erro', 'Erro  ao remover equipamento');
+            }
+        }
     }
 }

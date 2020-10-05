@@ -146,7 +146,7 @@
                                                                         </div>
                                                                     </td>
                                                                     <td class="text-left">
-                                                                    {{ $item->nomeTipoEquipamento }} N° {{ $item->tombo }}
+                                                                    {{ $item->nomeTipoEquipamento }}
                                                                     </td>
                                                                     <td class="text-left">
                                                                          N° {{ $item->tombo }}
@@ -154,7 +154,9 @@
                                                                     <td class="text-left">
                                                                         {{ $item->descricao }}                                                                     </td>
                                                                     <td class="td-actions text-right">
-                                                                        <form action="{{ route('reserva.destroy', $item) }}" method="post">
+                                                                        <form
+                                                                            action="{{ route('reserva.laboratorio.destroy.reserva.equipamento', $item->idEquipamento) }}"
+                                                                            method="post">
                                                                                 @csrf
                                                                                 @method('delete')
                                                                                 <button type="button" class="btn btn-danger btn-link" data-original-title="" title="" onclick="confirm('{{ __("Você tem certeza que deseja excluir?") }}') ? this.parentElement.submit() : ''">
