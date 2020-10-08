@@ -136,20 +136,17 @@
                                         @elseif($itens !== '[]')
 
                                         @endif
-
-                                        @foreach ($itens as $item)
-                                        <tr class="text-center">
-                                            <td><b>{{$item->nomeTipo}}</b></td>
-                                            <td>{{$item->tomboEquipamento}}</td>
-                                            <td>{{$item->nomeLabin}}</td>
-                                            <td>{{date('d/m/y', strtotime($item->data))}}</td>
-                                            <td>{{$item->hora_inicio}}</td>
-                                            <td>{{$item->hora_fim}}</td>
-                                            <td>{{$dado->nomeSolicitante}}</td>
-                                        </tr>
-                                        @endforeach
-
-
+                                            @foreach ($itens as $item)
+                                            <tr class="text-center">
+                                                <td><b>{{$item->nomeTipo}}</b></td>
+                                                <td>{{$item->tomboEquipamento}}</td>
+                                                <td>{{$item->nomeLabin}}</td>
+                                                <td>{{date('d/m/y', strtotime($item->data))}}</td>
+                                                <td>{{$item->hora_inicio}}</td>
+                                                <td>{{$item->hora_fim}}</td>
+                                                <td>{{$item->nomeSolicitanteReserva}}</td>
+                                            </tr>
+                                            @endforeach
                                         @endforeach
 
                                     </tbody>

@@ -608,8 +608,6 @@ class ReservaController extends Controller
 
 
 
-
-
         return view('reserva.detail' ,[
             'reserva'=> $reservaEquipamento->select('reserva_equipamento.id as idEquipamento', 'tipo_equipamento.nome as nomeTipoEquipamento', 'equipamento.*')
             ->join('equipamento', 'equipamento.id', '=', 'reserva_equipamento.equipamento_id')
@@ -668,9 +666,7 @@ class ReservaController extends Controller
         foreach($equipamentos as $dado){
             $dadosReservaEquipamento[] =
             $reservaEquipamento
-                ->select('reserva_equipamento.*', 'reserva.*', 'solicitantes.nome as nomeSolicitante', 'equipamento.tombo as tomboEquipamento', 'tipo_equipamento.nome as nomeTipo', 'laboratorio.nome as nomeLabin')
-
-
+                ->select('reserva_equipamento.*', 'reserva.*', 'solicitantes.nome as nomeSolicitanteReserva', 'equipamento.tombo as tomboEquipamento', 'tipo_equipamento.nome as nomeTipo', 'laboratorio.nome as nomeLabin')
                 ->join('reserva', 'reserva.id', '=',  'reserva_equipamento.reserva_id')
                 ->join('solicitantes', 'solicitantes.id', '=', 'reserva.solicitante_id')
                 ->join('laboratorio', 'laboratorio.id', '=', 'reserva.laboratorio_id')
@@ -681,6 +677,9 @@ class ReservaController extends Controller
                 ->orderBy('reserva.hora_inicio', 'asc')
                 ->get();
         }
+
+
+
 
 
 
@@ -791,7 +790,7 @@ class ReservaController extends Controller
     {
 
 
-        return $reserva;
+
         $idReserva = $reserva->id;
 
 
