@@ -196,7 +196,7 @@
                                         <p class="card-description">
                                         <div class="tim-typo">
                                             <h5>
-                                                <span class="tim-note" style="color: black"><b>Cadastrado no dia/hora: </b></span>{{date('d/m/yy - h:m:s', strtotime($dado->created_at))}}
+                                                <span class="tim-note" style="color: black"><b>Cadastrado no dia/hora: </b></span>{{date('d/m/Y - H:m:s', strtotime($dado->created_at))}}
                                             </h5>
 
                                         </div>
