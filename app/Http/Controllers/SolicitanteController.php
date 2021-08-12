@@ -21,7 +21,6 @@ class SolicitanteController extends Controller
 
 
 
-
         return view('solicitante.index', ['solicitantes'=> $solicitantes]);
 
     }
