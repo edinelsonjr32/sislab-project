@@ -98,6 +98,7 @@ Route::group(['middleware' => 'auth'], function () {
 
 
     Route::get('reserva/laboratorio/{id}/detalhe/', 'ReservaController@show')->name('reserva.laboratorio.detalhe');
+    Route::get('reserva/laboratorio/{id}/alterar_status/', 'ReservaController@alterarStatus')->name('reserva.laboratorio.alterar.status');
 
     Route::post('reserva/laboratorio/relatorio/', 'ReservaController@relatorio')->name('reserva.laboratorio.relatorio');
 
@@ -122,6 +123,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::post('home/reserva/salvar', 'HomeController@store')->name('dashboard.reserva.salvar');
 
+    Route::get('home/reserva/{id}/alterar_status/', 'HomeController@alterarStatus')->name('dashboard.reserva.alterar.status');
 
 });
 

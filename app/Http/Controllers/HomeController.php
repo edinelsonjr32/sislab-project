@@ -35,8 +35,37 @@ class HomeController extends Controller
 
 
 
-        return view('dashboard', [ 'reservas' => $reserva->select('reserva.*', 'users.name as nomeUsuario', 'solicitantes.nome as nomeSolicitante', 'laboratorio.nome as nomeLaboratorio')->join('laboratorio', 'laboratorio.id', '=', 'reserva.laboratorio_id')->join('solicitantes', 'solicitantes.id', '=', 'reserva.solicitante_id')->join('users', 'users.id', '=', 'reserva.usuario_id')->whereDate('data', $dataHoje)->orderBy('data', 'desc')->get()]);
+        return view('dashboard', [ 'reservas' => $reserva->select('reserva.*', 'users.name as nomeUsuario', 'solicitantes.nome as nomeSolicitante', 'laboratorio.nome as nomeLaboratorio')->join('laboratorio', 'laboratorio.id', '=', 'reserva.laboratorio_id')->join('solicitantes', 'solicitantes.id', '=', 'reserva.solicitante_id')->join('users', 'users.id', '=', 'reserva.usuario_id')->whereDate('data', $dataHoje)->orderBy('data', 'desc')->orderBy('status', 'desc')->get()]);
 
+    }
+    public function alterarStatus(Reserva $reserva, $idReserva){
+        
+
+        $reservas = DB::table('reserva')->select('reserva.*')->where('reserva.id', '=', $idReserva)->get();
+        $status_reserva = DB::table('reserva')->select('reserva.status')->where('reserva.id', '=', $idReserva)->value('status');
+
+        
+        if ($reservas == null) {
+            return redirect()->route('home')->withStatus(__('Ocorreu um erro interno no sistema, tente mais tarde.'));
+
+        } elseif ($reservas !== null) {
+            if ($status_reserva == 1) {
+                DB::table('reserva')
+                    ->where('id', $idReserva)
+                    ->update(['status' => 0]);
+                    return redirect()->route('home')->with('erro', 'Você finalizou a reserva.');
+            } elseif ($status_reserva == 0) {
+                
+                DB::table('reserva')
+                    ->where('id', $idReserva)
+                    ->update(['status' => 1]);
+                    return redirect()->route('home')->with('status', 'Você alterou o status da reserva para "Em USO".');
+ 
+            }
+        }
+
+
+       
     }
     public function buscaData(Request  $request)
     {

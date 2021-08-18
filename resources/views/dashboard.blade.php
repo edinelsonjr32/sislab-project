@@ -160,16 +160,17 @@
                             <th>
                               {{ __('Solicitante') }}
                             </th>
-                            <th>
-                              {{ __('Cadastrado Por') }}
-                            </th>
+                            
+                            
                             <th>
                               {{ __('Data') }}
                             </th>
                             <th>
                               {{ __('Hora Inicio/Fim') }}
                             </th>
-
+                            <th>
+                                Status
+                            </th>
                             <th class="text-right" width="20%">
                               {{ __('Ação') }}
                             </th>
@@ -183,9 +184,7 @@
                                 <td>
                                   {{ $item->nomeSolicitante }}
                                 </td>
-                                <td>
-                                  {{ $item->nomeUsuario }}
-                                </td>
+                                
                                 <td>
                                     @php
                                        echo date('d/M/Y', strtotime($item->data));
@@ -194,6 +193,25 @@
                                 </td>
                                 <td>
                                   {{ $item->hora_inicio }}-{{$item->hora_fim}}
+                                </td>
+                                <td >
+                                  <div class="col-md-12">
+                                    @if ($item->status == 1)
+                        
+                                      <a rel="tooltip" class="btn btn-success btn-link" href="{{ route('dashboard.reserva.alterar.status', $item->id) }}" data-original-title="" title="">
+                                          <i class="material-icons">lock_open
+                                          </i>
+                                          <div class="ripple-container"></div>
+                                      </a>
+                                      @else
+                                      <a rel="tooltip" class="btn btn-danger btn-link" href="{{ route('dashboard.reserva.alterar.status', $item->id) }}" data-original-title="" title="">
+                                          <i class="material-icons">lock
+                                          </i>
+                                          <div class="ripple-container"></div>
+                                      </a>
+                                    @endif
+        
+                                  </div>
                                 </td>
                                 <td class="td-actions text-right">
                                   @if ($item->id)
